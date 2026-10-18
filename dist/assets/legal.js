@@ -26,7 +26,7 @@ function setPageInert(on) {
   document.querySelector(".skip")?.toggleAttribute("inert", on);
   document.querySelector("main")?.toggleAttribute("inert", on);
   document.querySelector(".footer")?.toggleAttribute("inert", on);
-  document.querySelector(".siteHeader .nav")?.toggleAttribute("inert", on);
+  document.querySelector(".siteHeader .brand")?.toggleAttribute("inert", on);
 }
 
 function setMenu(open, options = {}) {
@@ -55,7 +55,8 @@ function setMenu(open, options = {}) {
   } else {
     const panel = menu.querySelector(".menuPanel");
     const timer = setTimeout(finish, 500);
-    panel.addEventListener("transitionend", () => {
+    panel.addEventListener("transitionend", (event) => {
+      if (event.target !== panel) return;
       clearTimeout(timer);
       finish();
     }, { once: true });

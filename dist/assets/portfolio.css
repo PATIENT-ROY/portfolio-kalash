@@ -1709,19 +1709,30 @@ html.modal-open body {
     z-index: 40;
     display: block;
     padding: 0;
-    background: transparent;
+    background: rgba(15, 21, 18, 0.55);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .menu.is-open { opacity: 1; }
+
+  .siteHeader:has(.menu.is-open) .brand,
+  .siteHeader:has(.menu.is-open) .menuBtn,
+  .siteHeader:has(.menu.is-open) .scrollProgress {
+    visibility: hidden;
   }
 
   .menuPanel {
     position: absolute;
     top: 0;
     right: 0;
-    width: min(72vw, 340px);
+    width: min(76vw, 420px);
     height: 100%;
     height: 100dvh;
     background: #101510;
     color: var(--paper);
-    padding: 28px 26px 32px;
+    border-radius: 0;
+    padding: 28px 26px 28px;
     display: flex;
     flex-direction: column;
     overflow: auto;
@@ -1746,19 +1757,19 @@ html.modal-open body {
   }
 
   .menuBrand {
-    margin: 6px 48px 34px 0;
+    margin: 8px 48px 36px 0;
     color: var(--lime);
-    font: 600 22px/1.15 Unbounded, sans-serif;
+    font: 600 26px/1.05 Unbounded, sans-serif;
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
-  .menuLinks { display: grid; gap: 4px; }
+  .menuLinks { display: grid; gap: 6px; }
 
   .menu a {
     border: 0;
     min-height: 0;
-    padding: 10px 0;
+    padding: 11px 0;
     font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -1767,16 +1778,16 @@ html.modal-open body {
 
   .menuNote {
     margin: auto 0 0;
-    max-width: 15em;
+    max-width: 12em;
     color: #d7e0d6;
-    font-size: 17px;
-    line-height: 1.4;
+    font-size: 16px;
+    line-height: 1.35;
     font-weight: 500;
   }
 
   .menuSocial {
     display: flex;
-    gap: 12px;
+    gap: 14px;
     margin-top: 22px;
   }
 
@@ -1791,10 +1802,6 @@ html.modal-open body {
     letter-spacing: 0;
     text-transform: none;
   }
-}
-
-@media (max-width: 640px) {
-  .menuPanel { width: 100%; }
 }
 
 @media (max-width: 1199px) {
@@ -2384,6 +2391,7 @@ html.modal-open body {
   .albumHint,
   .intro > .label::before,
   .heading .label::before,
+  .menu,
   .menu a,
   .menuPanel,
   .offer-dialog,
