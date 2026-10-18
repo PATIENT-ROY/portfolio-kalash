@@ -9,7 +9,10 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  touch-action: manipulation;
+}
 
 html,
 body {
@@ -126,7 +129,8 @@ button { cursor: pointer; }
 .format:hover,
 .format:focus-visible { transform: translateY(-4px); }
 
-section[id] { scroll-margin-top: 96px; }
+section[id],
+#top { scroll-margin-top: 96px; }
 
 .siteHeader {
   position: sticky;
@@ -289,7 +293,7 @@ section[id] { scroll-margin-top: 96px; }
   content: "";
   position: absolute;
   inset: 0;
-  background: url("zhenya-portrait1.png") center 28% / cover no-repeat;
+  background: url("zhenya-portrait1.webp") center 28% / cover no-repeat;
 }
 
 .heroVisual::after {
@@ -332,6 +336,8 @@ section[id] { scroll-margin-top: 96px; }
   transform: rotate(-5deg);
 }
 
+.heroPhotoCta { display: none; }
+
 .heroPlace {
   position: absolute;
   z-index: 2;
@@ -357,6 +363,8 @@ section[id] { scroll-margin-top: 96px; }
   animation: ticker 36s linear infinite;
 }
 
+.strip:hover .stripTrack { animation-play-state: paused; }
+
 .strip p {
   display: flex;
   margin: 0;
@@ -369,9 +377,12 @@ section[id] { scroll-margin-top: 96px; }
   white-space: nowrap;
 }
 
-.strip span::after {
-  content: "✳";
+.strip span svg {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
   margin-left: 22px;
+  vertical-align: -0.12em;
 }
 
 .section { padding-block: 105px; }
@@ -434,7 +445,7 @@ h2 {
   position: relative;
   aspect-ratio: 841 / 1123;
   background: #56634d;
-  border-radius: 4px;
+  border-radius: 20px;
   overflow: hidden;
 }
 
@@ -442,7 +453,7 @@ h2 {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("zhenya-portrait_2.png") center / cover no-repeat;
+  background: url("zhenya-portrait_2.webp") center / cover no-repeat;
   clip-path: inset(0);
   transition: clip-path 0.65s cubic-bezier(.77, 0, .18, 1);
 }
@@ -559,7 +570,7 @@ h2 {
   text-align: left;
   color: #fff;
   background: #253829;
-  border-radius: 4px;
+  border-radius: 20px;
 }
 
 .album-cover {
@@ -573,15 +584,15 @@ h2 {
 }
 
 .album-one .album-cover {
-  background-image: url("event-wedding/event-wedding-cover.png");
+  background-image: url("event-wedding/event-wedding-cover.webp");
   background-position: center 22%;
 }
 .album-two .album-cover {
-  background-image: url("event-dinner/event-dinner-cover..png");
+  background-image: url("event-dinner/event-dinner-cover.webp");
   background-position: 78% center;
 }
 .album-three .album-cover {
-  background-image: url("event-corporate/event-corporate-cover.png");
+  background-image: url("event-corporate/event-corporate-cover.webp");
   background-position: 72% center;
 }
 
@@ -624,15 +635,21 @@ h2 {
 
 .album-title span {
   display: inline-block;
+  width: 14px;
+  height: 14px;
   color: var(--lime);
   font-size: 14px;
   transition: transform 0.35s cubic-bezier(.22, .7, .2, 1);
 }
 
+.album-title span svg { display: block; width: 14px; height: 14px; }
+
 .album-card:hover .album-title span,
 .album-card:focus-visible .album-title span { transform: translate(4px, -4px); }
 
 .albumScroll { display: none; }
+
+.albumHint { display: none; }
 
 .wall-heading {
   display: flex;
@@ -688,7 +705,7 @@ h2 {
 
 .wall-item {
   border: 0;
-  border-radius: 4px;
+  border-radius: 20px;
   position: relative;
   min-height: 355px;
   overflow: hidden;
@@ -709,10 +726,10 @@ h2 {
 .wall-item:hover .wall-image,
 .wall-item:focus-visible .wall-image { transform: scale(1.06); }
 
-.wall-a .wall-image { background-image: url("event-corporate/event-corporate-cover.png"); background-position: 72% center; }
-.wall-b .wall-image { background-image: url("zhenya-portrait_2.png"); background-position: center 18%; }
-.wall-c .wall-image { background-image: url("event-dinner/event-dinner-cover..png"); background-position: 78% center; }
-.wall-d .wall-image { background-image: url("event-corporate/corporate-2.png"); background-position: center 40%; }
+.wall-a .wall-image { background-image: url("event-corporate/event-corporate-cover.webp"); background-position: 72% center; }
+.wall-b .wall-image { background-image: url("zhenya-portrait_2.webp"); background-position: center 18%; }
+.wall-c .wall-image { background-image: url("event-dinner/event-dinner-cover.webp"); background-position: 78% center; }
+.wall-d .wall-image { background-image: url("event-corporate/corporate-2.webp"); background-position: center 40%; }
 
 .wall-item::after {
   content: "";
@@ -766,6 +783,8 @@ html.modal-open body {
   max-height: 95vh;
   background: #17221b;
   color: #f6f5ec;
+  border-radius: 20px;
+  overflow: auto;
   box-shadow: 0 30px 80px #0009;
 }
 
@@ -829,6 +848,7 @@ html.modal-open body {
   height: min(67vh, 680px);
   object-fit: contain;
   background: #354438;
+  border-radius: 20px;
 }
 
 .portfolio-dialog .label { color: var(--lime); }
@@ -951,7 +971,7 @@ html.modal-open body {
 
 .videoFrame {
   background: #0c140f;
-  border-radius: 4px;
+  border-radius: 20px;
   overflow: hidden;
   aspect-ratio: 576 / 784;
 }
@@ -988,6 +1008,7 @@ html.modal-open body {
   min-height: 0;
   padding: 22px 22px 20px;
   border: 1px solid var(--line);
+  border-radius: 16px;
   background: #f7f5ee;
   color: inherit;
 }
@@ -1023,6 +1044,8 @@ html.modal-open body {
   font-size: 16px;
   font-weight: 700;
 }
+
+.doorCta svg { display: block; width: 16px; height: 16px; }
 
 .doorCta { transition: transform 0.35s cubic-bezier(.22, .7, .2, 1), background 0.35s ease, color 0.35s ease, border-color 0.35s ease; }
 
@@ -1081,12 +1104,13 @@ html.modal-open body {
 
 .formatsCompany .format { grid-column: span 2; }
 
-.formatsCompany .format:nth-child(4),
-.formatsCompany .format:nth-child(5) { grid-column: span 3; }
+.formatsCompany .format:nth-child(4):nth-last-child(2),
+.formatsCompany .format:nth-child(5):last-child { grid-column: span 3; }
 
 .format {
   background: #f7f5ee;
   border: 1px solid #d5dacd;
+  border-radius: 16px;
   min-height: 360px;
   padding: 30px;
   display: flex;
@@ -1130,10 +1154,13 @@ html.modal-open body {
 
 .format .arrow {
   display: inline-block;
-  font-size: 14px;
+  width: 14px;
+  height: 14px;
   line-height: 1;
   transition: transform 0.35s cubic-bezier(.22, .7, .2, 1);
 }
+
+.format .arrow svg { display: block; width: 14px; height: 14px; }
 
 .format:hover .arrow,
 .format:focus-visible .arrow { transform: translate(4px, -4px); }
@@ -1166,6 +1193,7 @@ html.modal-open body {
   overflow: auto;
   background: var(--ink);
   color: var(--paper);
+  border-radius: 20px;
   box-shadow: 0 30px 80px #0009;
 }
 
@@ -1273,6 +1301,8 @@ html.modal-open body {
 
 .reviews { border-bottom: 1px solid var(--line); }
 
+.reviewDots { display: none; }
+
 .reviewGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1282,6 +1312,7 @@ html.modal-open body {
 .review {
   background: #e9eddf;
   border: 1px solid #d1d9c9;
+  border-radius: 16px;
   min-height: 350px;
   padding: 30px;
   display: flex;
@@ -1313,6 +1344,9 @@ html.modal-open body {
   padding: 0;
   list-style: none;
 }
+
+.steps li:first-child { border-radius: 16px 0 0 16px; }
+.steps li:last-child { border-radius: 0 16px 16px 0; }
 
 .steps li {
   min-width: 0;
@@ -1404,6 +1438,7 @@ html.modal-open body {
 }
 
 .contactSocial {
+  position: relative;
   display: inline-block;
   border-bottom: 1px solid;
   padding-bottom: 8px;
@@ -1412,10 +1447,17 @@ html.modal-open body {
   text-transform: uppercase;
 }
 
+.contactSocial::after {
+  content: "";
+  position: absolute;
+  inset: -12px -14px;
+}
+
 .contactForm {
   background: var(--ink);
   color: #fff;
   padding: 42px;
+  border-radius: 20px;
   box-shadow: 20px 20px 0 #9fb65a;
 }
 
@@ -1424,7 +1466,7 @@ html.modal-open body {
   grid-template-columns: 34% 1fr;
   align-items: center;
   gap: 15px;
-  border-bottom: 1px solid #414141;
+  border-bottom: 0;
   min-height: 100px;
 }
 
@@ -1441,16 +1483,18 @@ html.modal-open body {
   font: 500 17px Manrope, Arial, sans-serif;
   background: transparent;
   color: #fff;
-  border: 0;
+  border: 1px solid #415043;
+  border-radius: 12px;
   outline-offset: 3px;
   width: 100%;
   min-width: 0;
-  padding: 20px 0;
+  padding: 14px 16px;
   color-scheme: dark;
 }
 
 .contactForm select {
   appearance: none;
+  padding-right: 32px;
   background-image:
     linear-gradient(45deg, transparent 50%, #d8f17a 50%),
     linear-gradient(135deg, #d8f17a 50%, transparent 50%);
@@ -1530,11 +1574,11 @@ html.modal-open body {
 
 .contactForm .consent input {
   appearance: none;
-  width: 18px;
-  height: 18px;
-  min-width: 18px;
-  margin: 2px 0 0;
-  flex: 0 0 18px;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  margin: 1px 0 0;
+  flex: 0 0 24px;
   padding: 0;
   border: 1.5px solid #c9d4c6;
   border-radius: 3px;
@@ -1562,8 +1606,7 @@ html.modal-open body {
 .contactForm textarea {
   min-height: 130px;
   margin-top: 12px;
-  border: 1px solid #415043;
-  padding: 12px;
+  padding: 12px 16px;
   resize: vertical;
 }
 
@@ -1638,6 +1681,10 @@ html.modal-open body {
   .links { gap: 0; }
 
   .steps { grid-template-columns: 1fr 1fr; }
+  .steps li:first-child { border-radius: 16px 0 0 0; }
+  .steps li:nth-child(2) { border-radius: 0 16px 0 0; }
+  .steps li:nth-child(3) { border-radius: 0 0 0 16px; }
+  .steps li:last-child { border-radius: 0 0 16px 0; }
 
   .steps li:not(:last-child) { box-shadow: none; }
 
@@ -1669,7 +1716,7 @@ html.modal-open body {
     position: absolute;
     top: 0;
     right: 0;
-    width: min(82vw, 360px);
+    width: min(72vw, 340px);
     height: 100%;
     height: 100dvh;
     background: #101510;
@@ -1678,6 +1725,7 @@ html.modal-open body {
     display: flex;
     flex-direction: column;
     overflow: auto;
+    overscroll-behavior: contain;
     transform: translateX(105%);
     transition: transform 0.45s cubic-bezier(.22, .7, .2, 1);
   }
@@ -1745,6 +1793,68 @@ html.modal-open body {
   }
 }
 
+@media (max-width: 640px) {
+  .menuPanel { width: 100%; }
+}
+
+@media (max-width: 1199px) {
+  .heroGrid { grid-template-columns: 1fr; }
+
+  .hero > .wrap { padding-left: 0; padding-right: 0; }
+
+  .heroText {
+    min-height: 0;
+    padding: 28px 5vw 40px;
+  }
+
+  .hero .label,
+  .heroPlace,
+  .heroText .solidBtn { display: none; }
+
+  .hero h1 {
+    font-size: clamp(46px, 12vw, 72px);
+    margin: 0 0 16px;
+  }
+
+  .heroVisual {
+    order: -1;
+    width: 100%;
+    height: calc(100dvh - 78px);
+    min-height: 0;
+  }
+
+  .heroVisual::before { background-position: center top; }
+
+  .heroVisual::after {
+    background: linear-gradient(to top, rgba(15, 27, 21, 0.82) 0%, rgba(15, 27, 21, 0.4) 20%, rgba(15, 27, 21, 0) 46%);
+  }
+
+  .heroPortraitLabel {
+    left: 20px;
+    right: auto;
+    bottom: 92px;
+    max-width: 240px;
+  }
+
+  .heroPhotoCta {
+    display: inline-block;
+    position: absolute;
+    z-index: 2;
+    left: 20px;
+    bottom: 22px;
+  }
+
+  .heroSticker {
+    top: 16px;
+    right: 16px;
+    padding: 8px 10px;
+    font-size: 12px;
+    line-height: 1.1;
+    max-width: none;
+    white-space: nowrap;
+  }
+}
+
 @media (max-width: 850px) {
   .heroGrid,
   .intro,
@@ -1752,20 +1862,6 @@ html.modal-open body {
   .caseGrid,
   .videoGrid,
   .contactGrid { grid-template-columns: 1fr; }
-
-  .heroText {
-    min-height: 0;
-    padding: 22px 0 36px;
-  }
-
-  .hero .label { display: none; }
-
-  .hero h1 {
-    font-size: clamp(46px, 12vw, 72px);
-    margin: 0 0 16px;
-  }
-
-  .heroVisual { order: -1; min-height: 560px; }
 
   .section,
   .videoSection,
@@ -1798,6 +1894,10 @@ html.modal-open body {
   .formatsCompany .format:nth-child(5) { grid-column: auto; }
 
   .steps { grid-template-columns: 1fr; }
+  .steps li:first-child { border-radius: 16px 16px 0 0; }
+  .steps li:nth-child(2),
+  .steps li:nth-child(3) { border-radius: 0; }
+  .steps li:last-child { border-radius: 0 0 16px 16px; }
 
   .steps li,
   .steps li + li,
@@ -1816,6 +1916,56 @@ html.modal-open body {
   .format,
   .formatsCompany .format { min-height: 0; }
   .review { min-height: 0; }
+
+  .reviewGrid {
+    position: relative;
+    display: flex;
+    gap: 14px;
+    margin-inline: -5vw;
+    padding-inline: 5vw;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 5vw;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .reviewGrid::-webkit-scrollbar { display: none; }
+
+  .review {
+    flex: 0 0 calc(100% - 3.25rem);
+    width: calc(100% - 3.25rem);
+    scroll-snap-align: start;
+    min-height: 0;
+  }
+
+  .reviewDots {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  .reviewDots button {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .reviewDots button::before {
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    margin: auto;
+    border-radius: 50%;
+    background: #c3ccc0;
+  }
+
+  .reviewDots button[aria-current="true"]::before { background: var(--ink); }
 
   .contactIntro h2 { font-size: clamp(48px, 12vw, 80px); }
   .contactIntro h2 em { font-size: clamp(36px, 9vw, 62px); }
@@ -1840,6 +1990,25 @@ html.modal-open body {
     flex: 0 0 82vw;
     min-height: 430px;
     scroll-snap-align: start;
+  }
+
+  #moments .heading p {
+    position: relative;
+    padding-right: 72px;
+  }
+
+  .albumHint {
+    display: block;
+    position: absolute;
+    top: 2px;
+    right: 0;
+    width: 64px;
+  }
+
+  .albumHint img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   .albumScroll:not([hidden]) {
@@ -1878,22 +2047,19 @@ html.modal-open body {
   .dialog-bottom { align-items: start; gap: 12px; flex-direction: column; }
   .dialog-look { align-items: flex-start; }
   .dialog-moments { justify-content: flex-start; }
-  .dialog-side { width: 36px; height: 36px; margin-top: -18px; }
+  .dialog-side { width: 44px; height: 44px; margin-top: -22px; }
   #dialog-prev { left: 8px; }
   #dialog-next { right: 8px; }
 
-  .heroVisual { min-height: 500px; }
-  .heroVisual::before { background-position: center 22%; }
-  .heroPortraitLabel { left: 20px; bottom: 20px; }
-  .heroSticker { top: 16px; right: 16px; }
-  .heroPlace {
-    top: 18px;
-    left: 14px;
-    width: 38%;
-    max-width: 38%;
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    line-height: 1.35;
+  .heroVisual { min-height: 0; height: calc(100dvh - 78px); }
+
+  .heroPortraitLabel { max-width: 210px; }
+
+  .heroSticker {
+    top: 12px;
+    right: 12px;
+    padding: 6px 8px;
+    font-size: 10px;
   }
 
   .personImage { height: auto; }
@@ -1912,7 +2078,9 @@ html.modal-open body {
   }
 
   .contactForm input,
-  .contactForm select { padding: 8px 0 16px; }
+  .contactForm select { padding: 12px 14px; }
+
+  .contactForm select { padding-right: 32px; }
 
   .sendRow { grid-template-columns: 1fr; }
 
@@ -1930,27 +2098,21 @@ html.modal-open body {
 }
 
 @media (max-width: 380px) {
-  .heroPlace {
-    top: 18px;
-    width: 42%;
-    max-width: 42%;
-  }
-
   .heroSticker {
-    right: 12px;
-    max-width: 46%;
-    padding: 10px 12px;
-    line-height: 1.25;
+    top: 10px;
+    right: 10px;
+    padding: 5px 7px;
+    font-size: 10px;
   }
 }
 
-@media (min-width: 851px) {
+@media (min-width: 1200px) {
   .hero {
     height: calc(100vh - 78px);
     height: calc(100dvh - 78px);
     overflow: clip;
     position: relative;
-    background: #0f1b15 url("zhenya-portrait_3.png") right center / auto 100% no-repeat;
+    background: #0f1b15 url("zhenya-portrait_3.webp") right center / auto 100% no-repeat;
     background-position: calc(100% + var(--px, 0px)) calc(50% + var(--py, 0px));
     transition: background-position 0.7s cubic-bezier(.22, .7, .2, 1);
   }
@@ -1978,7 +2140,7 @@ html.modal-open body {
     z-index: 2;
   }
 
-  .heroVisual::before { display: none; }
+  .heroVisual::before { display: none; background-image: none; }
 
   .heroVisual::after {
     background: linear-gradient(0deg, #10191099, transparent 34%);
@@ -2129,11 +2291,25 @@ html.modal-open body {
   transform: none;
 }
 
+@media (max-width: 850px) {
+  .album-card.reveal,
+  .album-card.reveal.is-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .album-card.reveal .album-cover,
+  .album-card.reveal:not(.is-in) .album-cover {
+    clip-path: none;
+    transition: none;
+  }
+}
+
 .format.reveal.is-in:hover,
 .format.reveal.is-in:focus-visible { transform: translateY(-4px); }
 
-.offer-dialog,
-.portfolio-dialog {
+.offer-dialog {
   opacity: 0;
   transform: translateY(18px);
   transition:
@@ -2143,22 +2319,19 @@ html.modal-open body {
     display 0.32s allow-discrete;
 }
 
-.offer-dialog[open],
-.portfolio-dialog[open] {
+.offer-dialog[open] {
   opacity: 1;
   transform: none;
 }
 
 @starting-style {
-  .offer-dialog[open],
-  .portfolio-dialog[open] {
+  .offer-dialog[open] {
     opacity: 0;
     transform: translateY(18px);
   }
 }
 
-.offer-dialog::backdrop,
-.portfolio-dialog::backdrop {
+.offer-dialog::backdrop {
   opacity: 0;
   transition:
     opacity 0.32s ease,
@@ -2166,15 +2339,14 @@ html.modal-open body {
     display 0.32s allow-discrete;
 }
 
-.offer-dialog[open]::backdrop,
-.portfolio-dialog[open]::backdrop { opacity: 1; }
+.offer-dialog[open]::backdrop { opacity: 1; }
 
 @starting-style {
-  .offer-dialog[open]::backdrop,
-  .portfolio-dialog[open]::backdrop { opacity: 0; }
+  .offer-dialog[open]::backdrop { opacity: 0; }
 }
 
-.dialog-image.is-in { animation: frameIn 0.4s ease; }
+.dialog-image,
+.dialog-image.is-in { animation: none; }
 
 .dialog-image.is-from-card,
 .dialog-image.is-from-card.is-in { animation: none; opacity: 1; }
@@ -2209,6 +2381,7 @@ html.modal-open body {
   .heroVisual,
   .heroSticker,
   .personSticker,
+  .albumHint,
   .intro > .label::before,
   .heading .label::before,
   .menu a,

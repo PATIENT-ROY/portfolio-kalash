@@ -3,17 +3,17 @@ const albums = {
     title: "Там, где свои люди",
     images: [
       {
-        src: "assets/event-wedding/event-wedding-cover.png",
+        src: "assets/event-wedding/event-wedding-cover.webp",
         alt: "Женя в смокинге говорит в микрофон на церемонии",
         caption: "Женя на церемонии. Микрофон на стойке, в руках текст.",
       },
       {
-        src: "assets/event-wedding/wedding-1.png",
+        src: "assets/event-wedding/wedding-1.webp",
         alt: "Пара на церемонии на воздухе, гости сидят спиной к кадру",
         caption: "Церемония на воздухе. Пара стоит к гостям спиной, за ними вода.",
       },
       {
-        src: "assets/event-wedding/wedding-2.png",
+        src: "assets/event-wedding/wedding-2.webp",
         alt: "Гости аплодируют невесте на церемонии",
         caption: "Гости уже на ногах. Невеста в кадре со спины.",
       },
@@ -23,17 +23,17 @@ const albums = {
     title: "Вечер при свечах",
     images: [
       {
-        src: "assets/event-dinner/event-dinner-cover..png",
+        src: "assets/event-dinner/event-dinner-cover.webp",
         alt: "Женя с гостьей на вечере",
         caption: "Женя в зале. Вечер уже идёт, гости рядом.",
       },
       {
-        src: "assets/event-dinner/dinner-1.png",
+        src: "assets/event-dinner/dinner-1.webp",
         alt: "Накрытый стол со свечами и белыми цветами",
         caption: "Стол накрыт. Свечи горят, гости ещё не сели.",
       },
       {
-        src: "assets/event-dinner/dinner-2.png",
+        src: "assets/event-dinner/dinner-2.webp",
         alt: "Гости за ужином при свечах",
         caption: "Гости за столом. Разговор, бокалы, свечи.",
       },
@@ -43,17 +43,17 @@ const albums = {
     title: "Вместе вне офиса",
     images: [
       {
-        src: "assets/event-corporate/event-corporate-cover.png",
+        src: "assets/event-corporate/event-corporate-cover.webp",
         alt: "Женя с микрофоном у стола с гостями",
         caption: "Женя у стола. Гости уже разговаривают, не ждут конкурса.",
       },
       {
-        src: "assets/event-corporate/corporate-1.png",
+        src: "assets/event-corporate/corporate-1.webp",
         alt: "Гости с бокалами стоят у круглого стола",
         caption: "Гости с бокалами. Сцены ещё нет, вечер уже идёт.",
       },
       {
-        src: "assets/event-corporate/corporate-2.png",
+        src: "assets/event-corporate/corporate-2.webp",
         alt: "Гости за столами аплодируют в зале",
         caption: "Зал аплодирует. Гости сидят, свет уже вечерний.",
       },
@@ -108,7 +108,7 @@ function renderSlide() {
   dialog.querySelectorAll("[data-moment]").forEach((button) => {
     const on = button.dataset.moment === currentAlbum;
     button.classList.toggle("is-on", on);
-    button.setAttribute("aria-selected", String(on));
+    button.setAttribute("aria-pressed", String(on));
   });
   image.classList.remove("is-in");
   void image.offsetWidth;
@@ -167,76 +167,18 @@ function flyImage(from, to, token) {
 }
 
 async function openAlbum(key, index = 0) {
-  if (albumBusy) return;
-  const token = ++flightToken;
-  const from = coverRect(key);
   currentAlbum = key;
   currentIndex = index;
   renderSlide();
   if (dialog.open) return;
-  const canFly = Boolean(from) && !reduceMotion.matches;
-  if (canFly) {
-    dialog.classList.add("is-shared");
-    image.style.visibility = "hidden";
-  }
   lockPage();
   dialog.showModal();
-  if (!canFly) return;
-  albumBusy = true;
-  flightMode = "open";
-  await new Promise((resolve) => requestAnimationFrame(resolve));
-  if (token !== flightToken || !dialog.open) return;
-  const to = image.getBoundingClientRect();
-  image.style.visibility = "";
-  if (to.width < 20) {
-    clearImageFlight();
-    flightMode = "";
-    return;
-  }
-  await flyImage(from, to, token);
-  if (token !== flightToken || !dialog.open) return;
-  clearImageFlight();
-  flightMode = "";
 }
 
-async function closeAlbum() {
+function closeAlbum() {
   if (!dialog.open) return;
-  if (albumBusy && flightMode === "open") {
-    flightToken += 1;
-    image.style.visibility = "";
-    clearImageFlight();
-    flightMode = "";
-    dialog.close();
-    return;
-  }
-  if (albumBusy) return;
-  const to = coverRect(currentAlbum);
-  const from = image.getBoundingClientRect();
-  if (reduceMotion.matches || !to || from.width < 20) {
-    dialog.close();
-    return;
-  }
-  albumBusy = true;
-  flightMode = "close";
-  dialog.classList.add("is-shared");
-  image.classList.add("is-from-card");
-  image.style.transformOrigin = "top left";
-  image.style.transition = "transform 0.48s cubic-bezier(.22, .7, .2, 1)";
-  image.style.transform = `translate(${to.left - from.left}px, ${to.top - from.top}px) scale(${to.width / from.width}, ${to.height / from.height})`;
-  await new Promise((resolve) => {
-    let settled = false;
-    const finish = () => {
-      if (settled) return;
-      settled = true;
-      resolve();
-    };
-    image.addEventListener("transitionend", (event) => {
-      if (event.propertyName === "transform") finish();
-    });
-    setTimeout(finish, 560);
-  });
-  flightMode = "";
   dialog.close();
+  unlockIfClear();
 }
 
 function moveMoment(delta) {
@@ -293,23 +235,48 @@ dialog.addEventListener("close", () => {
 
 const menuBtn = document.querySelector(".menuBtn");
 const menu = document.getElementById("site-menu");
+let menuAnchor = "";
 
-function setMenu(open) {
+function setPageInert(on) {
+  document.querySelector(".skip")?.toggleAttribute("inert", on);
+  document.querySelector("main")?.toggleAttribute("inert", on);
+  document.querySelector(".footer")?.toggleAttribute("inert", on);
+  document.querySelector(".siteHeader .nav")?.toggleAttribute("inert", on);
+}
+
+function setMenu(open, options = {}) {
   menuBtn.setAttribute("aria-expanded", String(open));
   if (open) {
+    menuAnchor = "";
     menu.hidden = false;
     lockPage();
+    setPageInert(true);
     requestAnimationFrame(() => menu.classList.add("is-open"));
     menu.querySelector(".menuClose").focus();
     return;
   }
+  menuAnchor = options.anchor || "";
+  const restoreFocus = options.restoreFocus !== false && !menuAnchor;
   menu.classList.remove("is-open");
   let closed = false;
   const finish = () => {
     if (closed || menu.classList.contains("is-open")) return;
     closed = true;
     menu.hidden = true;
+    setPageInert(false);
+    const anchor = menuAnchor;
+    menuAnchor = "";
     if (!document.querySelector("dialog[open]")) unlockPage();
+    if (anchor) {
+      const target = document.querySelector(anchor);
+      if (target) {
+        if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+        target.scrollIntoView({ block: "start" });
+        target.focus({ preventScroll: true });
+      }
+    } else if (restoreFocus) {
+      menuBtn.focus();
+    }
   };
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     finish();
@@ -321,7 +288,6 @@ function setMenu(open) {
       finish();
     }, { once: true });
   }
-  menuBtn.focus();
 }
 
 menuBtn.addEventListener("click", () => setMenu(menu.hidden));
@@ -330,13 +296,17 @@ menu.addEventListener("click", (event) => {
 });
 menu.querySelector(".menuClose").addEventListener("click", () => setMenu(false));
 menu.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => setMenu(false));
+  link.addEventListener("click", () => {
+    const href = link.getAttribute("href") || "";
+    const samePage = href.startsWith("#");
+    setMenu(false, { restoreFocus: false, anchor: samePage ? href : "" });
+  });
 });
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !menu.hidden) setMenu(false);
 });
 window.addEventListener("resize", () => {
-  if (window.innerWidth > 980 && !menu.hidden) setMenu(false);
+  if (window.innerWidth > 980 && !menu.hidden) setMenu(false, { restoreFocus: false });
 });
 
 function unlockIfClear() {
@@ -424,6 +394,17 @@ const offers = {
       "Сценарий под возраст и компанию",
       "Ведение: сбор, тосты, поздравления, танец",
       "Место для живого общения, без гонки по таймингу",
+    ],
+  },
+  "Новогодний корпоратив": {
+    kicker: "Конец года",
+    title: "Новогодний корпоратив",
+    lead: "Праздничный вечер для команды. Женя держит темп и оставляет место для тостов, без конкурсов, в которых людей заставляют выступать.",
+    includes: [
+      "Разговор до даты: традиции компании, кого отметить и чего лучше не касаться",
+      "Сбор гостей и праздничная часть",
+      "Тосты и поздравления без обязательного выхода каждого к микрофону",
+      "Финал вечера в нужном темпе",
     ],
   },
   "День рождения компании": {
@@ -516,7 +497,10 @@ document.querySelectorAll("[data-event]").forEach((card) => {
 offerDialog.addEventListener("click", (event) => {
   if (event.target === offerDialog || event.target.closest("[data-offer-close]")) offerDialog.close();
 });
-offerDialog.addEventListener("close", unlockIfClear);
+offerDialog.addEventListener("close", () => {
+  if (requestDialog.open) return;
+  unlockIfClear();
+});
 
 const requestDialog = document.getElementById("request-dialog");
 const requestForm = document.getElementById("request-form");
@@ -530,7 +514,10 @@ function openRequest(eventName) {
   (next || select).focus();
 }
 
-document.getElementById("offer-cta").addEventListener("click", () => openRequest(offerEvent));
+document.getElementById("offer-cta").addEventListener("click", () => {
+  openRequest(offerEvent);
+  if (offerDialog.open) offerDialog.close();
+});
 
 requestDialog.addEventListener("click", (event) => {
   if (event.target === requestDialog || event.target.closest("[data-request-close]")) requestDialog.close();
@@ -634,6 +621,52 @@ if (motionOk) {
       heroVisual?.style.removeProperty("--py");
     });
   }
+}
+
+const reviewRail = document.querySelector(".reviewGrid");
+const reviewDots = document.querySelector(".reviewDots");
+if (reviewRail && reviewDots) {
+  const reviewCards = [...reviewRail.querySelectorAll(".review")];
+  reviewCards.forEach((card, index) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.setAttribute("aria-label", `Отзыв ${index + 1}`);
+    dot.addEventListener("click", () => {
+      const pad = parseFloat(getComputedStyle(reviewRail).paddingLeft) || 0;
+      reviewRail.scrollTo({
+        left: card.offsetLeft - pad,
+        behavior: reduceMotion.matches ? "auto" : "smooth",
+      });
+    });
+    reviewDots.append(dot);
+  });
+
+  const syncReviewDots = () => {
+    const center = reviewRail.scrollLeft + reviewRail.clientWidth / 2;
+    let active = 0;
+    reviewCards.forEach((card, index) => {
+      const mid = card.offsetLeft + card.offsetWidth / 2;
+      const best = reviewCards[active].offsetLeft + reviewCards[active].offsetWidth / 2;
+      if (Math.abs(mid - center) < Math.abs(best - center)) active = index;
+    });
+    [...reviewDots.children].forEach((dot, index) => {
+      if (index === active) dot.setAttribute("aria-current", "true");
+      else dot.removeAttribute("aria-current");
+    });
+  };
+
+  const showReviewCards = () => {
+    if (!window.matchMedia("(max-width: 850px)").matches) return;
+    reviewCards.forEach((card) => card.classList.add("is-in"));
+  };
+
+  reviewRail.addEventListener("scroll", syncReviewDots, { passive: true });
+  window.addEventListener("resize", () => {
+    showReviewCards();
+    syncReviewDots();
+  });
+  showReviewCards();
+  syncReviewDots();
 }
 
 const yearsStat = document.querySelector(".statYears b");

@@ -22,22 +22,33 @@ function unlockPage() {
 const menuBtn = document.querySelector(".menuBtn");
 const menu = document.getElementById("site-menu");
 
-function setMenu(open) {
+function setPageInert(on) {
+  document.querySelector(".skip")?.toggleAttribute("inert", on);
+  document.querySelector("main")?.toggleAttribute("inert", on);
+  document.querySelector(".footer")?.toggleAttribute("inert", on);
+  document.querySelector(".siteHeader .nav")?.toggleAttribute("inert", on);
+}
+
+function setMenu(open, options = {}) {
   menuBtn.setAttribute("aria-expanded", String(open));
   if (open) {
     menu.hidden = false;
     lockPage();
+    setPageInert(true);
     requestAnimationFrame(() => menu.classList.add("is-open"));
     menu.querySelector(".menuClose").focus();
     return;
   }
+  const restoreFocus = options.restoreFocus !== false;
   menu.classList.remove("is-open");
   let closed = false;
   const finish = () => {
     if (closed || menu.classList.contains("is-open")) return;
     closed = true;
     menu.hidden = true;
+    setPageInert(false);
     unlockPage();
+    if (restoreFocus) menuBtn.focus();
   };
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     finish();
@@ -49,7 +60,6 @@ function setMenu(open) {
       finish();
     }, { once: true });
   }
-  menuBtn.focus();
 }
 
 menuBtn.addEventListener("click", () => setMenu(menu.hidden));
@@ -58,13 +68,13 @@ menu.addEventListener("click", (event) => {
 });
 menu.querySelector(".menuClose").addEventListener("click", () => setMenu(false));
 menu.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => setMenu(false));
+  link.addEventListener("click", () => setMenu(false, { restoreFocus: false }));
 });
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !menu.hidden) setMenu(false);
 });
 window.addEventListener("resize", () => {
-  if (window.innerWidth > 980 && !menu.hidden) setMenu(false);
+  if (window.innerWidth > 980 && !menu.hidden) setMenu(false, { restoreFocus: false });
 });
 
 const scrollProgress = document.querySelector(".scrollProgress");
