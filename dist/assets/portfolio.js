@@ -324,9 +324,65 @@ const isoToday = [
   String(today.getDate()).padStart(2, "0"),
 ].join("-");
 
+function bindReach(form) {
+  const reach = form.querySelector(".reach");
+  const input = reach.querySelector("input");
+  const tabs = [...reach.querySelectorAll("[data-reach]")];
+
+  function apply(next) {
+    reach.dataset.mode = next;
+    const phone = next === "phone";
+    tabs.forEach((tab) => {
+      const on = tab.dataset.reach === next;
+      tab.setAttribute("aria-selected", on ? "true" : "false");
+      tab.tabIndex = on ? 0 : -1;
+    });
+    input.setCustomValidity("");
+    input.type = phone ? "tel" : "text";
+    input.inputMode = phone ? "tel" : "text";
+    input.autocomplete = phone ? "tel" : "off";
+    input.placeholder = phone ? "Ваш номер*" : "Ваш Telegram*";
+    input.maxLength = phone ? 22 : 64;
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => {
+      apply(tab.dataset.reach);
+      input.focus();
+    });
+    tab.addEventListener("keydown", (event) => {
+      const dir = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1
+        : event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1
+        : 0;
+      if (!dir) return;
+      event.preventDefault();
+      const next = tabs[(index + dir + tabs.length) % tabs.length];
+      apply(next.dataset.reach);
+      next.focus();
+    });
+  });
+
+  input.addEventListener("input", () => input.setCustomValidity(""));
+  apply(reach.dataset.mode === "phone" ? "phone" : "telegram");
+}
+
+function contactText(mode, raw) {
+  const value = clean(raw);
+  if (mode === "phone") {
+    const digits = value.replace(/\D/g, "");
+    return digits.length >= 10 && digits.length <= 15 ? value : "";
+  }
+  const handle = value
+    .replace(/^https?:\/\/(t\.me|telegram\.me)\//i, "")
+    .replace(/^@/, "")
+    .split(/[/?#]/)[0];
+  return /^[a-zA-Z][a-zA-Z0-9_]{4,31}$/.test(handle) ? `@${handle}` : "";
+}
+
 function bindRequestForm(form) {
   const dateField = form.elements.namedItem("date");
   const status = form.querySelector(".formStatus");
+  const contactInput = form.querySelector(".reach input");
   dateField.min = isoToday;
   dateField.addEventListener("input", () => dateField.setCustomValidity(""));
   form.elements.namedItem("name").addEventListener("input", (event) => {
@@ -335,6 +391,7 @@ function bindRequestForm(form) {
   form.elements.namedItem("consent").addEventListener("change", (event) => {
     event.currentTarget.setCustomValidity("");
   });
+  bindReach(form);
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const data = new FormData(form);
@@ -342,13 +399,21 @@ function bindRequestForm(form) {
     const dateValue = String(data.get("date") || "");
     const nameInput = form.elements.namedItem("name");
     const consent = form.elements.namedItem("consent");
+    const mode = form.querySelector(".reach").dataset.mode === "phone" ? "phone" : "telegram";
+    const contact = contactText(mode, data.get("contact"));
     nameInput.setCustomValidity(name ? "" : "Напишите, как к вам обращаться.");
     dateField.setCustomValidity(
       dateValue && dateValue < isoToday ? "Эта дата уже прошла. Выберите день события." : "",
     );
+    contactInput.setCustomValidity(contact
+      ? ""
+      : (mode === "phone"
+        ? "Напишите номер, по которому вам можно позвонить."
+        : "Напишите ник в Telegram, например @name."));
     consent.setCustomValidity(consent.checked ? "" : "Нужно согласие на обработку персональных данных.");
     if (!form.reportValidity()) return;
     nameInput.setCustomValidity("");
+    contactInput.setCustomValidity("");
 
     const [year, month, day] = dateValue.split("-");
     const request = [
@@ -356,18 +421,13 @@ function bindRequestForm(form) {
       `Тип события: ${clean(data.get("event"))}`,
       `Дата: ${day}.${month}.${year}`,
       `Количество гостей: ${clean(data.get("guests"))}.`,
+      mode === "phone" ? `Телефон: ${contact}` : `Telegram: ${contact}`,
     ].join("\n");
 
-    const via = event.submitter?.value === "max" ? "max" : "telegram";
-    const text = encodeURIComponent(request);
-    const url = via === "max"
-      ? `https://max.ru/:share?text=${text}`
-      : `https://t.me/+79122204032?text=${text}`;
+    const url = `https://t.me/+79122204032?text=${encodeURIComponent(request)}`;
     const opened = window.open(url, "_blank", "noopener,noreferrer");
     status.textContent = opened
-      ? (via === "max"
-        ? "Max открыт с готовым текстом. Найдите Женю по номеру +7 912 220-40-32 и отправьте."
-        : "Открыт чат с Женей в Telegram. Осталось нажать «Отправить».")
+      ? "Открыт чат с Женей в Telegram. Осталось нажать «Отправить»."
       : "Браузер заблокировал окно. Разрешите всплывающие и нажмите кнопку ещё раз.";
   });
 }
@@ -554,8 +614,345 @@ if (albumGrid) {
   syncAlbumScroll();
 }
 
+const clientNames = [
+  "Авито",
+  "Золотое Яблоко",
+  "УралТрансЭкспедиция",
+  "Сима-ленд",
+  "Контур",
+  "Жизньмарт",
+  "Синара",
+  "УБРиР",
+];
+
+const clientShapes = ["oval", "ticket", "rect", "wave", "oval", "rect", "ticket", "wave"];
+const clientTilts = [-6, 4, -2, 5, -4, 3, -5, 2];
+
+function clientShapeSvg(shape, tone) {
+  const fill = tone === "ink" ? "#1b2c21" : "#f7f5ee";
+  if (shape === "ticket") {
+    return `<svg class="clientShape" viewBox="0 0 280 96" preserveAspectRatio="none" aria-hidden="true"><path fill="${fill}" d="M22 2h236c12 0 20 8 20 18v12a16 16 0 0 0 0 32v12c0 10-8 18-20 18H22c-12 0-20-8-20-18V64a16 16 0 0 0 0-32V20C2 10 10 2 22 2Z"/></svg>`;
+  }
+  return `<svg class="clientShape" viewBox="0 0 260 108" preserveAspectRatio="none" aria-hidden="true"><path fill="${fill}" d="M36 16c22-14 48-8 74-2 28 6 40-12 72-6 22 4 40-2 52 16 14 20 18 28 8 46-8 16 6 28-8 40-18 14-48 6-78 12-32 6-52-8-82 2-22 8-46-4-52-24-8-22 2-36 8-52 4-14 8-20 6-32Z"/></svg>`;
+}
+
+function mountClientStickers() {
+  const list = document.querySelector(".clientStickers");
+  if (!list) return;
+  const items = clientNames.map((name, index) => {
+    const shape = clientShapes[index % clientShapes.length];
+    const tone = index % 2 ? "ink" : "cream";
+    const sticker = document.createElement("li");
+    sticker.className = "clientSticker";
+    sticker.dataset.shape = shape;
+    sticker.dataset.tone = tone;
+    if (name.length > 16) sticker.dataset.long = "true";
+    sticker.style.setProperty("--tilt-base", `${clientTilts[index % clientTilts.length]}deg`);
+    if (shape === "ticket" || shape === "wave") sticker.insertAdjacentHTML("beforeend", clientShapeSvg(shape, tone));
+    const label = document.createElement("span");
+    label.textContent = name;
+    sticker.append(label);
+    return sticker;
+  });
+  list.replaceChildren(...items);
+}
+
+mountClientStickers();
+
+function bindClientPlayground() {
+  const section = document.querySelector(".clients");
+  const stage = document.querySelector(".clientStage");
+  const list = document.querySelector(".clientStickers");
+  if (!section || !stage || !list || typeof Matter === "undefined") return;
+
+  const { Engine, Runner, Bodies, Body, Composite, Mouse, MouseConstraint, Events, Sleeping } = Matter;
+  const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const stickers = [...list.querySelectorAll(".clientSticker")];
+  const spots = [
+    [0.16, 0.58],
+    [0.42, 0.52],
+    [0.74, 0.56],
+    [0.24, 0.78],
+    [0.5, 0.8],
+    [0.76, 0.76],
+    [0.36, 0.36],
+    [0.64, 0.34],
+  ];
+
+  let engine = null;
+  let runner = null;
+  let loopOn = false;
+  let playing = false;
+  let dragging = false;
+  let walls = [];
+  let pointer = null;
+  let pairs = [];
+  let pointerAim = null;
+  let pointerVel = { x: 0, y: 0 };
+
+  function canPlay() {
+    return fine.matches && !reduce.matches && window.innerWidth > 700;
+  }
+
+  function syncStickers() {
+    pairs.forEach(({ el, body, w, h }) => {
+      el.style.transform = `translate3d(${body.position.x - w / 2}px, ${body.position.y - h / 2}px, 0) rotate(${body.angle}rad)`;
+    });
+  }
+
+  function layoutWalls() {
+    const width = stage.clientWidth;
+    const height = stage.clientHeight;
+    const thick = 180;
+    const edge = {
+      isStatic: true,
+      restitution: 0.5,
+      friction: 0.25,
+      label: "wall",
+    };
+    walls.forEach((wall) => Composite.remove(engine.world, wall));
+    walls = [
+      Bodies.rectangle(width / 2, height - 12 + thick / 2, width + thick * 2, thick, edge),
+      Bodies.rectangle(width / 2, -thick / 2, width + thick * 2, thick, edge),
+      Bodies.rectangle(10 - thick / 2, height / 2, thick, height + thick * 2, edge),
+      Bodies.rectangle(width - 10 + thick / 2, height / 2, thick, height + thick * 2, edge),
+    ];
+    Composite.add(engine.world, walls);
+    pairs.forEach(({ body, w, h }) => {
+      const x = Math.min(width - w / 2 - 16, Math.max(w / 2 + 16, body.position.x));
+      const y = Math.min(height - h / 2 - 20, Math.max(h / 2 + 12, body.position.y));
+      if (x !== body.position.x || y !== body.position.y) Body.setPosition(body, { x, y });
+    });
+  }
+
+  function parkPointer() {
+    pointerAim = null;
+    pointerVel = { x: 0, y: 0 };
+    if (!pointer) return;
+    Body.setPosition(pointer, { x: -400, y: -400 });
+    Body.setVelocity(pointer, { x: 0, y: 0 });
+  }
+
+  function build() {
+    const sizes = stickers.map((el) => ({ w: el.offsetWidth, h: el.offsetHeight }));
+    section.classList.add("is-play");
+    stickers.forEach((el, index) => {
+      el.style.width = `${sizes[index].w}px`;
+      el.style.height = `${sizes[index].h}px`;
+    });
+
+    engine = Engine.create({ enableSleeping: true });
+    engine.gravity.y = 1;
+    engine.positionIterations = 10;
+    engine.velocityIterations = 8;
+
+    const width = stage.clientWidth;
+    const height = stage.clientHeight;
+    pairs = stickers.map((el, index) => {
+      const { w, h } = sizes[index];
+      const spot = spots[index % spots.length];
+      const x = Math.min(width - w / 2 - 16, Math.max(w / 2 + 16, width * spot[0]));
+      const y = Math.min(height - h / 2 - 28, Math.max(h / 2 + 16, height * spot[1]));
+      const shape = el.dataset.shape;
+      const radius = shape === "oval" ? Math.max(4, Math.min(w, h) / 2 - 1) : shape === "wave" ? 26 : 16;
+      const body = Bodies.rectangle(x, y, w, h, {
+        restitution: 0.55,
+        friction: 0.12,
+        frictionStatic: 0.18,
+        frictionAir: 0.014,
+        density: 0.0018,
+        chamfer: { radius: Math.min(radius, h / 2 - 1, w / 2 - 1) },
+        sleepThreshold: 40,
+        label: "sticker",
+      });
+      Body.setAngle(body, (clientTilts[index % clientTilts.length] * Math.PI) / 180);
+      Body.setInertia(body, body.inertia * 3.4);
+      return { el, body, w, h, home: body.angle };
+    });
+    Composite.add(engine.world, pairs.map((pair) => pair.body));
+    layoutWalls();
+
+    pointer = Bodies.circle(-400, -400, 26, {
+      restitution: 0.15,
+      friction: 0,
+      frictionAir: 0,
+      density: 0.05,
+      label: "pointer",
+      collisionFilter: { category: 0x0002, mask: 0x0001 },
+    });
+    Composite.add(engine.world, pointer);
+
+    const mouse = Mouse.create(stage);
+    stage.removeEventListener("wheel", mouse.mousewheel);
+    stage.removeEventListener("touchmove", mouse.mousemove);
+    stage.removeEventListener("touchstart", mouse.mousedown);
+    stage.removeEventListener("touchend", mouse.mouseup);
+    const mouseConstraint = MouseConstraint.create(engine, {
+      mouse,
+      collisionFilter: { category: 0x0001, mask: 0x0001 },
+      constraint: { stiffness: 0.65, damping: 0.2, length: 0 },
+    });
+    Composite.add(engine.world, mouseConstraint);
+
+    Events.on(mouseConstraint, "startdrag", (event) => {
+      dragging = true;
+      if (event.body) event.body.plugin.dragged = true;
+      pairs.forEach((pair) => pair.el.classList.toggle("is-grabbed", pair.body === event.body));
+      parkPointer();
+    });
+    Events.on(mouseConstraint, "enddrag", (event) => {
+      dragging = false;
+      if (event.body) event.body.plugin.dragged = false;
+      stickers.forEach((el) => el.classList.remove("is-grabbed"));
+    });
+
+    let lastMove = null;
+    stage.addEventListener("mousemove", (event) => {
+      if (!playing) return;
+      const rect = stage.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      if (dragging) {
+        parkPointer();
+        lastMove = null;
+        return;
+      }
+      const now = performance.now();
+      if (lastMove) {
+        const dt = Math.max(8, now - lastMove.t);
+        let vx = ((x - lastMove.x) / dt) * 16.67;
+        let vy = ((y - lastMove.y) / dt) * 16.67;
+        const speed = Math.hypot(vx, vy);
+        const cap = 34;
+        if (speed > cap) {
+          vx *= cap / speed;
+          vy *= cap / speed;
+        }
+        pointerVel = { x: vx, y: vy };
+      }
+      pointerAim = { x, y };
+      lastMove = { x, y, t: now };
+    });
+    stage.addEventListener("mouseleave", () => {
+      lastMove = null;
+      parkPointer();
+    });
+
+    Events.on(engine, "beforeUpdate", () => {
+      if (!pointer) return;
+      if (dragging || !pointerAim) {
+        Body.setPosition(pointer, { x: -400, y: -400 });
+        Body.setVelocity(pointer, { x: 0, y: 0 });
+        return;
+      }
+      Body.setPosition(pointer, pointerAim);
+      Body.setVelocity(pointer, pointerVel);
+      Sleeping.set(pointer, false);
+    });
+    Events.on(engine, "afterUpdate", () => {
+      pairs.forEach(({ body, home }) => {
+        if (dragging && body.plugin.dragged) return;
+        if (body.speed > 2.4) return;
+        let delta = home - body.angle;
+        while (delta > Math.PI) delta -= Math.PI * 2;
+        while (delta < -Math.PI) delta += Math.PI * 2;
+        if (Math.abs(delta) < 0.012 && Math.abs(body.angularVelocity) < 0.012) return;
+        Body.setAngularVelocity(body, body.angularVelocity * 0.8 + delta * 0.14);
+      });
+      syncStickers();
+    });
+
+    runner = Runner.create();
+    Runner.run(runner, engine);
+    loopOn = true;
+    playing = true;
+    syncStickers();
+  }
+
+  function pause() {
+    playing = false;
+    if (runner) runner.enabled = false;
+  }
+
+  function resume() {
+    if (!canPlay()) return;
+    if (!engine) {
+      const start = () => {
+        if (!engine && canPlay()) build();
+      };
+      if (document.fonts && document.fonts.status !== "loaded") document.fonts.ready.then(start);
+      else start();
+      return;
+    }
+    section.classList.add("is-play");
+    pairs.forEach(({ el, w, h }) => {
+      el.style.width = `${w}px`;
+      el.style.height = `${h}px`;
+    });
+    playing = true;
+    if (!loopOn) {
+      Runner.run(runner, engine);
+      loopOn = true;
+      return;
+    }
+    runner.enabled = true;
+  }
+
+  function stopPlay() {
+    pause();
+    parkPointer();
+    dragging = false;
+    section.classList.remove("is-play");
+    stickers.forEach((el) => {
+      el.style.transform = "";
+      el.style.width = "";
+      el.style.height = "";
+      el.classList.remove("is-grabbed");
+    });
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!canPlay()) return;
+      if (entry.isIntersecting) resume();
+      else pause();
+    });
+  }, { threshold: 0.08 });
+
+  function syncMode() {
+    if (!canPlay()) {
+      stopPlay();
+      return;
+    }
+    observer.observe(section);
+  }
+
+  syncMode();
+  fine.addEventListener("change", syncMode);
+  reduce.addEventListener("change", syncMode);
+  window.addEventListener("resize", () => {
+    if (!canPlay()) {
+      stopPlay();
+      return;
+    }
+    if (engine && section.classList.contains("is-play")) layoutWalls();
+    else observer.observe(section);
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      pause();
+      return;
+    }
+    const box = section.getBoundingClientRect();
+    if (box.bottom > 0 && box.top < window.innerHeight) resume();
+  });
+}
+
+bindClientPlayground();
+
 const revealTargets = document.querySelectorAll(
-  ".door, .doors .heading, .intro, .personImage, .personCopy, #moments .heading, .album-card, .caseSection, .videoSection, .formatSection .heading, .formatGroupTitle, .format, .statement, .reviews .heading, .review, #steps > .label, #steps > h2, .steps li, .contactIntro, .contactForm",
+  ".door, .doors .heading, .intro, .personImage, .personCopy, #moments .heading, .album-card, .caseSection, .videoSection, .formatSection .heading, .formatGroupTitle, .format, .clients, .reviews .heading, .review, #steps > .label, #steps > h2, .steps li, .contactIntro, .contactForm",
 );
 
 revealTargets.forEach((node) => {
