@@ -19,7 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="assets/zhenya-portrait1.webp" media="(max-width: 1199px)" type="image/webp">
   <link rel="preload" as="image" href="assets/zhenya-portrait_3.webp" media="(min-width: 1200px)" type="image/webp">
-  <link rel="stylesheet" href="assets/portfolio.css?v=clients-hop">
+  <link rel="stylesheet" href="assets/portfolio.css?v=close-btn">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -245,19 +245,25 @@
     </section>
 
     <section class="videoSection" id="video">
+      <div class="videoLights" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
       <div class="wrap videoGrid">
         <div>
           <div class="label" style="color: var(--lime)">04 / Включите звук</div>
           <h2 class="display">Почувствовать<br>вживую.</h2>
-          <p>Короткий фрагмент с площадки: голос, темп и то, как Женя говорит с залом.</p>
-          <a class="borderBtn" style="display: inline-block; margin-top: 22px" href="#contact">Перейти к разговору</a>
+          <p>Шоурил 2026: голос, темп и то, как Женя говорит с залом.</p>
+          <a class="borderBtn videoTalk" href="#contact">Перейти к разговору</a>
         </div>
         <div class="videoFrame">
-          <video controls playsinline preload="metadata" poster="assets/host-poster.webp" width="576" height="784" aria-label="Женя Калашников на мероприятии">
-            <source src="assets/host-reel.mp4" type="video/mp4">
+          <video controls playsinline preload="metadata" poster="assets/host-poster.webp?v=showreel2" width="1280" height="720" aria-label="Шоурил Жени Калашникова, 2026">
+            <source src="assets/host-reel.mp4?v=showreel" type="video/mp4">
             Ваш браузер не поддерживает видео.
           </video>
         </div>
+        <a class="borderBtn videoTalkAfter" href="#contact">Перейти к разговору</a>
       </div>
     </section>
 
@@ -525,7 +531,7 @@
           <div class="label" id="offer-kicker"></div>
           <h3 id="offer-title" class="display"></h3>
         </div>
-        <button type="button" class="dialog-close" data-offer-close aria-label="Закрыть">✕</button>
+        <button type="button" class="dialog-close" data-offer-close aria-label="Закрыть"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg></button>
       </div>
       <p class="offer-lead" id="offer-lead"></p>
       <div class="offer-price">
@@ -544,7 +550,7 @@
           <div class="label">Заявка</div>
           <h3 id="request-title" class="display">Расскажите о событии</h3>
         </div>
-        <button type="button" class="dialog-close" data-request-close aria-label="Закрыть">✕</button>
+        <button type="button" class="dialog-close" data-request-close aria-label="Закрыть"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg></button>
       </div>
       <label>
         <span>01 / Тип события</span>
@@ -612,7 +618,7 @@
           <div class="label">Портфолио</div>
           <h3 id="dialog-title" class="display"></h3>
         </div>
-        <button type="button" class="dialog-close" aria-label="Закрыть">✕</button>
+        <button type="button" class="dialog-close" aria-label="Закрыть"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg></button>
       </div>
       <div class="dialog-stage">
         <button type="button" class="dialog-side" id="dialog-prev" aria-label="Предыдущий момент">←</button>
@@ -634,6 +640,6 @@
     </div>
   </dialog>
   <script src="assets/matter.min.js" defer></script>
-  <script src="assets/portfolio.js?v=clients-play3" defer></script>
+  <script src="assets/portfolio.js?v=album4" defer></script>
 </body>
 </html>
