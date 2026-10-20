@@ -339,10 +339,17 @@ const isoToday = [
   String(today.getDate()).padStart(2, "0"),
 ].join("-");
 
+const maxChatUrl = ""; // Добавить подтверждённую ссылку владельца на чат MAX.
+const maxIconPath = "M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.4A10 10 0 1 0 12 2Zm-5 6h2l3 3 3-3h2v8h-2v-5l-3 3-3-3v5H7Z";
+
 function bindReach(form) {
   const reach = form.querySelector(".reach");
   const input = reach.querySelector("input");
   const tabs = [...reach.querySelectorAll("[data-reach]")];
+  const sendButton = form.querySelector(".sendBtn");
+  const sendIcon = sendButton.querySelector("path");
+  const telegramIconPath = sendIcon.getAttribute("d");
+  reach.querySelector(".reachIconPhone path").setAttribute("d", maxIconPath);
 
   function apply(next) {
     reach.dataset.mode = next;
@@ -356,8 +363,13 @@ function bindReach(form) {
     input.type = phone ? "tel" : "text";
     input.inputMode = phone ? "tel" : "text";
     input.autocomplete = phone ? "tel" : "off";
-    input.placeholder = phone ? "Ваш номер*" : "Ваш Telegram*";
+    input.placeholder = phone ? "Ваш номер" : "Ваш Telegram";
     input.maxLength = phone ? 22 : 64;
+    sendButton.querySelector("span").textContent = phone ? "Отправить в MAX" : "Отправить в Telegram";
+    sendIcon.setAttribute("d", phone ? maxIconPath : telegramIconPath);
+    form.querySelector(".formStatus").textContent = phone
+      ? (maxChatUrl ? "Откроется чат в MAX. Отправьте заявку в мессенджере." : "Чат MAX пока недоступен. Для отправки заявки выберите Telegram.")
+      : "Откроется чат с Женей в Telegram. Сообщение уйдёт, когда нажмёте отправить уже там.";
   }
 
   tabs.forEach((tab, index) => {
@@ -439,10 +451,14 @@ function bindRequestForm(form) {
       mode === "phone" ? `Телефон: ${contact}` : `Telegram: ${contact}`,
     ].join("\n");
 
-    const url = `https://t.me/+79122204032?text=${encodeURIComponent(request)}`;
+    if (mode === "phone" && !maxChatUrl) {
+      status.textContent = "Чат MAX пока недоступен. Для отправки заявки выберите Telegram.";
+      return;
+    }
+    const url = mode === "phone" ? maxChatUrl : `https://t.me/+79122204032?text=${encodeURIComponent(request)}`;
     const opened = window.open(url, "_blank", "noopener,noreferrer");
     status.textContent = opened
-      ? "Открыт чат с Женей в Telegram. Осталось нажать «Отправить»."
+      ? (mode === "phone" ? "Открыт чат в MAX." : "Открыт чат с Женей в Telegram. Осталось нажать «Отправить».")
       : "Браузер заблокировал окно. Разрешите всплывающие и нажмите кнопку ещё раз.";
   });
 }
@@ -587,7 +603,9 @@ function openRequest(eventName) {
   if (!document.documentElement.classList.contains("modal-open")) lockPage();
   requestDialog.showModal();
   const next = [...requestForm.elements].find((field) => field.willValidate && field.type !== "checkbox" && !field.value);
-  (next || select).focus();
+  const touchLayout = window.matchMedia("(pointer: coarse), (max-width: 650px)").matches;
+  const initialFocus = touchLayout ? requestDialog.querySelector("[data-request-close]") : (next || select);
+  initialFocus.focus({ preventScroll: true });
 }
 
 document.getElementById("offer-cta").addEventListener("click", () => {

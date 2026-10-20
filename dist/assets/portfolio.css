@@ -1712,7 +1712,7 @@ html.modal-open body {
 
 .contactForm label {
   display: grid;
-  grid-template-columns: 34% 1fr;
+  grid-template-columns: 34% minmax(0, 1fr);
   align-items: center;
   gap: 15px;
   border-bottom: 0;
@@ -1739,6 +1739,27 @@ html.modal-open body {
   min-width: 0;
   padding: 14px 16px;
   color-scheme: dark;
+}
+
+/* Keep native date controls inside the grid on mobile WebKit. */
+.contactForm input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  max-width: 100%;
+  min-inline-size: 0;
+  min-height: 50px;
+  text-align: left;
+}
+
+.contactForm input[type="date"]::-webkit-date-and-time-value {
+  min-width: 0;
+  text-align: left;
+}
+
+.contactForm input[type="date"]::-webkit-datetime-edit {
+  min-width: 0;
+  padding: 0;
 }
 
 .contactForm select {
@@ -1799,7 +1820,8 @@ html.modal-open body {
 .reach[data-mode="telegram"] .reachIconTg { display: block; }
 
 .reach input {
-  flex: 1 1 auto;
+  flex: 1 1 0;
+  width: auto;
   min-width: 0;
   border: 0;
   border-radius: 0;

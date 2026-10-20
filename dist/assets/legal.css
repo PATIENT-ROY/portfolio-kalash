@@ -9,6 +9,10 @@
   align-items: start;
 }
 
+.legalGrid > * { min-width: 0; }
+
+.legal article { overflow-wrap: anywhere; }
+
 .legalSide {
   position: sticky;
   top: 108px;
