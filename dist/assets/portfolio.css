@@ -2812,3 +2812,9 @@ html.modal-open body {
     transform: rotate(var(--tilt));
   }
 }
+
+.heroSticker { animation: none; }
+.heroSticker.is-playful {
+  transform: translate(var(--escape-x, 0px), var(--escape-y, 0px));
+  transition: transform 280ms cubic-bezier(.2, .8, .2, 1);
+}

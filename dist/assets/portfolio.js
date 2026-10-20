@@ -1117,3 +1117,82 @@ if (yearsStat && !reduceMotion.matches) {
   }, { threshold: 0.6 });
   countYears.observe(yearsStat);
 }
+
+// Keep the decorative label playful with a mouse, still with touch/reduced motion.
+function bindPlayfulSticker() {
+  const sticker = document.querySelector('.heroSticker');
+  const area = document.querySelector('.heroVisual');
+  if (!sticker || !area) return;
+  const mouse = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+  let origin = null;
+  let lastMove = -Infinity;
+
+  function reset() {
+    sticker.style.transition = 'none';
+    sticker.style.removeProperty('--escape-x');
+    sticker.style.removeProperty('--escape-y');
+    sticker.classList.toggle('is-playful', mouse.matches && !reduceMotion.matches);
+    const bounds = area.getBoundingClientRect();
+    const rect = sticker.getBoundingClientRect();
+    origin = mouse.matches && !reduceMotion.matches
+      ? { x: rect.left - bounds.left, y: rect.top - bounds.top } : null;
+    sticker.style.removeProperty('transition');
+    lastMove = -Infinity;
+  }
+
+  document.addEventListener('pointermove', (event) => {
+    if (!origin || event.pointerType !== 'mouse' || performance.now() - lastMove < 300) return;
+    if (document.querySelector('dialog[open]') || !document.getElementById('site-menu').hidden) return;
+    const rect = sticker.getBoundingClientRect();
+    const distance = Math.hypot(
+      event.clientX - clamp(event.clientX, rect.left, rect.right),
+      event.clientY - clamp(event.clientY, rect.top, rect.bottom),
+    );
+    if (distance > 65) return;
+    const bounds = area.getBoundingClientRect();
+    const headerBottom = document.querySelector('.siteHeader').getBoundingClientRect().bottom;
+    // Include the separate decorative arrow and keep clear of the sticky header.
+    const minX = Math.max(36, 36 - bounds.left);
+    const maxX = Math.min(bounds.width, innerWidth - bounds.left) - rect.width - 8;
+    const minY = Math.max(28, headerBottom + 28 - bounds.top);
+    const maxY = Math.min(bounds.height, innerHeight - bounds.top) - rect.height - 24;
+    if (maxX <= minX || maxY <= minY) return;
+    const x = rect.left - bounds.left;
+    const y = rect.top - bounds.top;
+    // The reference marks a top band plus two side corridors around the face.
+    // Desktop has copy on the left, so use only the portrait half there.
+    const photoLeft = innerWidth >= 1200 ? bounds.width * 0.48 : 0;
+    const photoWidth = bounds.width - photoLeft;
+    const zones = [
+      { left: photoLeft + photoWidth * 0.05, right: bounds.width, bottom: bounds.height * 0.24 },
+      { left: photoLeft + photoWidth * 0.05, right: photoLeft + photoWidth * 0.41, bottom: bounds.height * 0.53 },
+      { left: photoLeft + photoWidth * 0.80, right: bounds.width, bottom: bounds.height * 0.45 },
+    ].map(zone => ({
+      left: Math.max(minX, zone.left + 28),
+      right: Math.min(maxX, zone.right - rect.width - 8),
+      top: minY,
+      bottom: Math.min(maxY, zone.bottom - rect.height - 12),
+    })).filter(zone => zone.right >= zone.left && zone.bottom >= zone.top);
+    // Both endpoints must share a rectangle: the whole transition then avoids the face.
+    const corridors = zones.filter(zone => x >= zone.left - 1 && x <= zone.right + 1
+      && y >= zone.top - 1 && y <= zone.bottom + 1);
+    const candidates = corridors.flatMap(zone =>
+      [[-190, -110], [-190, 110], [190, -110], [190, 110]].map(([dx, dy]) => ({
+        x: clamp(x + dx, zone.left, zone.right),
+        y: clamp(y + dy, zone.top, zone.bottom),
+      })));
+    if (!candidates.length) return;
+    const score = (p) => Math.hypot(bounds.left + p.x + rect.width / 2 - event.clientX,
+      bounds.top + p.y + rect.height / 2 - event.clientY);
+    candidates.sort((a, b) => score(b) - score(a));
+    sticker.style.setProperty('--escape-x', `${candidates[0].x - origin.x}px`);
+    sticker.style.setProperty('--escape-y', `${candidates[0].y - origin.y}px`);
+    lastMove = performance.now();
+  }, { passive: true });
+  window.addEventListener('resize', reset);
+  mouse.addEventListener('change', reset);
+  reduceMotion.addEventListener('change', reset);
+  reset();
+}
+bindPlayfulSticker();
