@@ -367,6 +367,7 @@ function bindReach(form) {
     input.maxLength = phone ? 22 : 64;
     sendButton.querySelector("span").textContent = phone ? "Отправить в MAX" : "Отправить в Telegram";
     sendIcon.setAttribute("d", phone ? maxIconPath : telegramIconPath);
+    sendButton.disabled = phone && !maxChatUrl;
     form.querySelector(".formStatus").textContent = phone
       ? (maxChatUrl ? "Откроется чат в MAX. Отправьте заявку в мессенджере." : "Чат MAX пока недоступен. Для отправки заявки выберите Telegram.")
       : "Откроется чат с Женей в Telegram. Сообщение уйдёт, когда нажмёте отправить уже там.";
@@ -456,10 +457,14 @@ function bindRequestForm(form) {
       return;
     }
     const url = mode === "phone" ? maxChatUrl : `https://t.me/+79122204032?text=${encodeURIComponent(request)}`;
-    const opened = window.open(url, "_blank", "noopener,noreferrer");
-    status.textContent = opened
-      ? (mode === "phone" ? "Открыт чат в MAX." : "Открыт чат с Женей в Telegram. Осталось нажать «Отправить».")
-      : "Браузер заблокировал окно. Разрешите всплывающие и нажмите кнопку ещё раз.";
+    window.open(url, "_blank", "noopener,noreferrer");
+    status.replaceChildren(document.createTextNode("Отправьте сообщение в Telegram. Если чат не открылся, "));
+    const retry = document.createElement("a");
+    retry.href = url;
+    retry.target = "_blank";
+    retry.rel = "noopener noreferrer";
+    retry.textContent = "откройте его по ссылке";
+    status.append(retry, document.createTextNode(". Сайт не отправляет заявку автоматически."));
   });
 }
 
@@ -469,12 +474,12 @@ const offers = {
   Свадьба: {
     kicker: "01 / Для двоих и близких",
     title: "Свадьба",
-    lead: "Вечер вокруг вашей истории. Конкурсы на потеху залу в программу не входят.",
+    lead: "Для пары и близких: знакомство гостей, поздравления и время побыть вместе.",
     includes: [
       "Сценарий под пару: кто в зале, какой тон, что важно",
-      "День целиком — от сбора гостей до финала",
-      "Церемония отдельной позицией, если она нужна",
-      "Женя не выводит гостей выступать и не ставит конкурсы ради смеха зала",
+      "Порядок сбора гостей, поздравлений и основных моментов обсуждаем заранее",
+      "Если нужна церемония, отдельно обсудим её подготовку, проведение и стоимость",
+      "Поздравления и участие в программе — по желанию, без принуждения",
     ],
   },
   Юбилей: {
@@ -483,41 +488,41 @@ const offers = {
     lead: "Вечер для человека и тех, кто его знает. Истории, поздравления и время, чтобы гости успели поговорить, а не только посмотреть программу.",
     includes: [
       "Разговор с именинником и семьёй до даты",
-      "Сценарий под возраст и компанию",
-      "Ведение: сбор, тосты, поздравления, танец",
+      "Обсуждаем пожелания именинника, состав гостей и подходящий юмор — на этой основе готовим программу",
+      "Ведение встречи гостей, тостов и поздравлений. Танцевальные моменты обсуждаем при подготовке",
       "Место для живого общения, без гонки по таймингу",
     ],
   },
   "Новогодний корпоратив": {
     kicker: "Конец года",
     title: "Новогодний корпоратив",
-    lead: "Праздничный вечер для команды. Женя держит темп и оставляет место для тостов, без конкурсов, в которых людей заставляют выступать.",
+    lead: "Праздничный вечер для команды. Женя связывает праздничные блоки и оставляет место для тостов, без конкурсов, в которых людей заставляют выступать.",
     includes: [
       "Разговор до даты: традиции компании, кого отметить и чего лучше не касаться",
       "Сбор гостей и праздничная часть",
       "Тосты и поздравления без обязательного выхода каждого к микрофону",
-      "Финал вечера в нужном темпе",
+      "Согласованный финал праздничной программы",
     ],
   },
   "День рождения компании": {
     kicker: "Для команды",
     title: "День рождения компании",
-    lead: "Вечер про компанию и людей, которые её сделали. Не презентация, где микрофон идет по кругу.",
+    lead: "Вечер про компанию и людей, которые её сделали. Женя ведёт торжественную часть и поздравления, оставляя паузы для общения команды.",
     includes: [
       "Разговор до даты: повод, кого отметить и чего лучше не касаться",
       "Сбор гостей и торжественная часть",
       "Истории и поздравления без обязательных тостов",
-      "Темп, в котором команда успевает поговорить",
+      "Паузы для общения между поздравлениями",
     ],
   },
   "Отчётный вечер": {
     kicker: "Спикеры и переходы",
     title: "Отчётный вечер",
-    lead: "Цифры, выступления, переходы. Женя держит внимание, пока меняется спикер или слайд.",
+    lead: "Для подведения итогов и выступлений по согласованному регламенту.",
     includes: [
       "Регламент и порядок выступлений до даты",
       "Ведение: вход, объявления, переходы, финал",
-      "Зал не проваливается между блоками",
+      "Женя представляет спикеров и связывает выступления в единую программу",
       "Подстройка, если программа сдвигается",
     ],
   },
@@ -529,27 +534,27 @@ const offers = {
       "Регламент и список выступающих",
       "Представление гостей и участников",
       "Ведение в заданном тоне",
-      "Без отсебятины там, где её не просили",
+      "Заранее согласуем формулировки, обращения к участникам и тон ведения",
     ],
   },
   Вечеринка: {
-    kicker: "Темп",
+    kicker: "Неформальная встреча",
     title: "Вечеринка",
-    lead: "Темп вечера для этой компании. Игры только если они подходят этим людям.",
+    lead: "Неформальный вечер для друзей или команды. Игры только если они подходят этим людям.",
     includes: [
       "Разговор до даты: кто в зале, что можно и что нельзя",
-      "Темп вечера и вовлечение",
-      "Игры только если они подходят этим людям",
+      "Общение и вовлечение без обязательного участия",
+      "Заранее обсуждаем, какие игры гостям интересны и чего в программе быть не должно",
       "Подстройка по ходу вечера",
     ],
   },
   "Голос за кадром": {
     kicker: "Без выхода на сцену",
     title: "Голос за кадром",
-    lead: "Жени нет в кадре. Его голос ведёт программу: встречает, объявляет, задаёт ритм.",
+    lead: "Для события, где ведущий остаётся за сценой: Женя делает объявления и связывает части программы голосом.",
     includes: [
       "Сценарий объявлений до даты",
-      "Голосовое ведение от входа до финала",
+      "Голосовое ведение согласованных частей программы",
       "Переходы между активностями",
       "Тон под зал, без выхода на сцену",
     ],
@@ -577,7 +582,7 @@ function openOffer(name) {
     }),
   );
   document.getElementById("offer-extra").textContent =
-    "В оплату входит ведение вечера. Длительность, команда, аппаратура и выезд считаются отдельно — цифру Женя называет после разговора о дате и городе.";
+    "Состав услуги и стоимость согласуем после разговора о событии. Уточним длительность, площадку, DJ, оборудование и выезд.";
   lockPage();
   offerDialog.showModal();
 }
@@ -599,7 +604,7 @@ const requestForm = document.getElementById("request-form");
 
 function openRequest(eventName) {
   const select = requestForm.elements.namedItem("event");
-  if (eventName) select.value = eventName;
+  select.value = eventName || "";
   if (!document.documentElement.classList.contains("modal-open")) lockPage();
   requestDialog.showModal();
   const next = [...requestForm.elements].find((field) => field.willValidate && field.type !== "checkbox" && !field.value);
@@ -616,7 +621,11 @@ document.getElementById("offer-cta").addEventListener("click", () => {
 requestDialog.addEventListener("click", (event) => {
   if (event.target === requestDialog || event.target.closest("[data-request-close]")) requestDialog.close();
 });
-requestDialog.addEventListener("close", unlockIfClear);
+requestDialog.addEventListener("close", () => {
+  unlockIfClear();
+  const card = [...document.querySelectorAll("[data-event]")].find(node => node.dataset.event === offerEvent);
+  card?.focus({ preventScroll: true });
+});
 bindRequestForm(requestForm);
 
 function clean(value) {
@@ -626,6 +635,20 @@ function clean(value) {
 const albumGrid = document.querySelector(".album-grid");
 const albumScroll = document.querySelector(".albumScroll");
 const albumScrollBar = document.querySelector(".albumScrollBar");
+
+const albumHint = document.querySelector(".albumHint");
+if (albumHint && albumGrid && !reduceMotion.matches) {
+  const hintObserver = new IntersectionObserver((entries) => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    albumHint.classList.add("is-animated");
+    hintObserver.disconnect();
+  }, { threshold: 0.6 });
+  hintObserver.observe(albumHint);
+  const stopHint = () => albumHint.classList.remove("is-animated");
+  albumGrid.addEventListener("pointerdown", stopHint, { once: true, passive: true });
+  albumGrid.addEventListener("scroll", stopHint, { once: true, passive: true });
+}
+
 
 function syncAlbumScroll() {
   if (!albumGrid || !albumScroll || !albumScrollBar) return;

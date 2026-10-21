@@ -1041,15 +1041,17 @@ html.modal-open body {
 .videoLights span:nth-child(23) { --size: 32px; --light: #9ed9a4; --fade: 0.56; --dx: -8px; --dy: -5px; --dur: 29s; bottom: 3%; right: 24%; }
 .videoLights span:nth-child(24) { --size: 20px; --light: #f3b7a2; --fade: 0.66; --dx: -5px; --dy: 9px; --dur: 26s; top: 23%; right: -2px; }
 
-@media (hover: hover) and (pointer: fine) and (min-width: 701px) and (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) {
   .videoLights span {
-    animation: videoLightDrift var(--dur, 26s) ease-in-out infinite;
+    animation: videoLightDrift calc(var(--dur, 26s) * 0.7) ease-in-out infinite;
+    animation-delay: -7s;
   }
+  .videoLights span:nth-child(even) { animation-delay: -17s; }
 }
 
 @keyframes videoLightDrift {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(var(--dx, 8px), var(--dy, -6px), 0); }
+  0%, 100% { transform: translate3d(calc(-1.8 * var(--dx, 8px)), calc(-1.8 * var(--dy, -6px)), 0); }
+  50% { transform: translate3d(calc(1.8 * var(--dx, 8px)), calc(1.8 * var(--dy, -6px)), 0); }
 }
 
 @media (max-width: 700px) {
@@ -1896,6 +1898,7 @@ html.modal-open body {
 .sendBtn:focus-visible { background: var(--lime); color: var(--ink); }
 
 .contactForm .formStatus {
+  min-height: 4.5em;
   color: #c8c8c8;
   font-size: 12px;
   line-height: 1.5;
@@ -2360,7 +2363,10 @@ html.modal-open body {
 
   .album-card {
     flex: 0 0 82vw;
-    min-height: 430px;
+    width: 82vw;
+    min-width: 0;
+    height: 430px;
+    min-height: 0;
     scroll-snap-align: start;
   }
 
@@ -2817,4 +2823,73 @@ html.modal-open body {
 .heroSticker.is-playful {
   transform: translate(var(--escape-x, 0px), var(--escape-y, 0px));
   transition: transform 280ms cubic-bezier(.2, .8, .2, 1);
+}
+
+/* Existing paper, ink and lime palette; native, keyboard-accessible FAQ. */
+.faq details { border-top: 1px solid currentColor; }
+.faq details:last-of-type { border-bottom: 1px solid currentColor; }
+.faq summary { cursor: pointer; padding: 22px 0; font-weight: 700; font-size: clamp(17px, 2vw, 22px); }
+.faq details p { max-width: 740px; margin: 0 0 24px; line-height: 1.7; }
+.faqCta { display: inline-flex; margin-top: 28px; }
+@media (max-width: 1199px) {
+  .heroPortraitLabel { max-width: min(340px, calc(100% - 40px)); }
+  .heroPortraitLabel small { max-width: 290px; line-height: 1.5; }
+}
+
+.sendBtn:disabled { opacity: .55; cursor: not-allowed; }
+
+@media (max-width: 650px) {
+  #offer-dialog .dialog-top { display: block; position: relative; }
+  #offer-dialog .dialog-close { position: absolute; top: 0; right: 0; }
+  #offer-kicker { padding-right: 60px; }
+  #offer-title { margin-top: 28px; font-size: clamp(26px, 7vw, 36px); overflow-wrap: anywhere; }
+}
+
+/* Share title and description rows across neighbouring service cards. */
+@media (min-width: 851px) {
+  .formatsCompany .format {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 4;
+    row-gap: 0;
+  }
+  .formatsCompany .format > div { display: contents; }
+  .formatsCompany .format p { align-self: start; }
+  .formatsCompany .format .arrow { align-self: end; }
+}
+
+@media (min-width: 1200px) {
+  .heroText { padding-bottom: 34px; }
+  .heroFoot,
+  .heroPortraitLabel small { line-height: 18px; }
+}
+
+@media (max-width: 1199px) {
+  .heroPlace {
+    display: block;
+    position: static;
+    max-width: none;
+    margin-bottom: 12px;
+  }
+}
+
+@keyframes albumSwipeHint {
+  0%, 15%, 100% { transform: translateX(0); }
+  40%, 55% { transform: translateX(-8px); }
+  75% { transform: translateX(0); }
+}
+@media (max-width: 650px) and (prefers-reduced-motion: no-preference) {
+  .albumHint.is-animated img { animation: albumSwipeHint 2s ease-in-out 2; }
+}
+
+@media (min-width: 651px) and (hover: hover) and (pointer: fine) {
+  .contactPhone .phoneDigit {
+    opacity: var(--phone-opacity, 1);
+    transition: opacity 0.35s ease;
+  }
+  .contactPhone:hover .phoneDigit,
+  .contactPhone:focus .phoneDigit { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contactPhone .phoneDigit { transition: none; }
 }

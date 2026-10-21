@@ -1,0 +1,352 @@
+- generic [active] [ref=f8e1]:
+  - link "К содержанию" [ref=f8e2] [cursor=pointer]:
+    - /url: "#top"
+  - banner [ref=f8e3]:
+    - generic [ref=f8e4]:
+      - link "Женя Калашников" [ref=f8e5] [cursor=pointer]:
+        - /url: "#top"
+        - text: ЖеняКалашников
+      - navigation "Навигация" [ref=f8e6]:
+        - link "О Жене" [ref=f8e7] [cursor=pointer]:
+          - /url: "#person"
+        - link "Портфолио" [ref=f8e8] [cursor=pointer]:
+          - /url: "#moments"
+        - link "Видео" [ref=f8e9] [cursor=pointer]:
+          - /url: "#video"
+        - link "Услуги" [ref=f8e10] [cursor=pointer]:
+          - /url: "#formats"
+        - link "Отзывы" [ref=f8e11] [cursor=pointer]:
+          - /url: "#reviews"
+      - link "Обсудить событие" [ref=f8e12] [cursor=pointer]:
+        - /url: "#contact"
+  - main [ref=f8e13]:
+    - generic [ref=f8e15]:
+      - generic [ref=f8e16]:
+        - generic [ref=f8e17]:
+          - generic [ref=f8e18]: Ведущий · Екатеринбург / Москва
+          - heading "Вечер, который похож на вас." [level=1] [ref=f8e19]:
+            - generic [ref=f8e20]: Вечер,
+            - generic [ref=f8e21]: который
+            - generic [ref=f8e22]: похож на вас.
+          - paragraph [ref=f8e23]: Женя Калашников — ведущий свадеб, юбилеев и корпоративов. С юмором, вниманием к гостям и без принуждения к конкурсам.
+          - generic [ref=f8e24]:
+            - link "Обсудить событие" [ref=f8e25] [cursor=pointer]:
+              - /url: "#contact"
+            - link "Посмотреть видео" [ref=f8e26] [cursor=pointer]:
+              - /url: "#video"
+        - generic [ref=f8e27]: Свадьбы · Юбилеи · Корпоративы
+      - generic:
+        - generic:
+          - text: Женя Калашников
+          - generic: Ведущий · Свадьбы, юбилеи, корпоративы
+        - generic [ref=f8e29]: Сначала познакомимся?
+    - paragraph [ref=f8e34]:
+      - generic [ref=f8e35]: Живые люди
+      - generic [ref=f8e42]: Ваш повод
+      - generic [ref=f8e49]: Тёплая встреча
+      - generic [ref=f8e56]: Свадьбы
+      - generic [ref=f8e63]: Юбилеи
+      - generic [ref=f8e70]: Корпоративы
+      - generic [ref=f8e77]: Новогодний корпоратив
+    - generic [ref=f8e84]:
+      - generic [ref=f8e85]: 01 / Познакомимся
+      - paragraph [ref=f8e86]:
+        - text: Можно придумать идеальный сценарий.
+        - emphasis [ref=f8e87]: Но праздник становится вашим, когда ведущий знает, кто эти люди, и умеет быть рядом в нужный момент.
+    - generic [ref=f8e89]:
+      - img "Женя Калашников на площадке" [ref=f8e90]:
+        - generic [aria-hidden] [ref=f8e91]: Микрофон.И поводок.
+      - generic [ref=f8e93]:
+        - generic [ref=f8e94]: Это Женя
+        - heading "Кудрявый. Картавый. Свой." [level=2] [ref=f8e95]: Кудрявый.Картавый.Свой.
+        - paragraph [ref=f8e96]: Душевный, кудрявый и картавый — так он говорит о себе сам. Легко знакомится, замечает детали и помогает гостям почувствовать себя своими.
+        - generic [ref=f8e97]:
+          - generic [ref=f8e98]: Опыт
+          - generic [ref=f8e99]:
+            - generic [ref=f8e100]: "7"
+            - generic [ref=f8e101]: лет на площадке
+          - paragraph [ref=f8e102]: 1 500+ мероприятий · 120 000+ гостей
+        - generic [ref=f8e103]:
+          - generic [ref=f8e104]:
+            - text: На празднике
+            - paragraph [ref=f8e105]: Говорит с людьми, а не в зал. Знает, кто перед ним, и оставляет время, чтобы гости успели пообщаться.
+          - generic [ref=f8e106]:
+            - text: Вне праздника
+            - paragraph [ref=f8e107]: Читает Толкина и слушает рок. Характер не включается вместе с микрофоном.
+        - link "Посмотреть, что говорят клиенты" [ref=f8e108] [cursor=pointer]:
+          - /url: "#reviews"
+    - region [ref=f8e109]:
+      - generic [ref=f8e110]:
+        - generic [ref=f8e111]:
+          - generic [ref=f8e112]:
+            - generic [ref=f8e113]: 02 / формат
+            - heading "Для своих или для компании." [level=2] [ref=f8e114]: Для своихили для компании.
+          - paragraph [ref=f8e115]: Два разных вечера. Выберите семейный праздник или событие для команды.
+        - generic [ref=f8e116]:
+          - link "Для своих Свадьба и юбилей Знакомим гостей, даём место поздравлениям и общению." [ref=f8e117] [cursor=pointer]:
+            - /url: "#own"
+            - generic [ref=f8e118]: Для своих
+            - strong [ref=f8e119]: Свадьба и юбилей
+            - paragraph [ref=f8e120]: Знакомим гостей, даём место поздравлениям и общению.
+          - link "Для компании Событие для компании Новогодний корпоратив, день рождения компании, отчёт, официальное мероприятие, вечеринка или голос за кадром." [ref=f8e124] [cursor=pointer]:
+            - /url: "#company"
+            - generic [ref=f8e125]: Для компании
+            - strong [ref=f8e126]: Событие для компании
+            - paragraph [ref=f8e127]: Новогодний корпоратив, день рождения компании, отчёт, официальное мероприятие, вечеринка или голос за кадром.
+    - generic [ref=f8e131]:
+      - generic [ref=f8e132]:
+        - generic [ref=f8e133]:
+          - generic [ref=f8e134]: 03 / Портфолио
+          - heading "Люди. События. Моменты." [level=2] [ref=f8e135]: Люди. События.Моменты.
+        - paragraph [ref=f8e136]: Свадьба, ужин и корпоратив. Откройте альбом — кадры откроются крупно.
+      - generic [ref=f8e137]:
+        - button "Открыть альбом свадьбы" [ref=f8e138] [cursor=pointer]:
+          - generic [ref=f8e140]: Свадьба
+          - generic [ref=f8e141]: Там, гдесвои люди
+        - button "Открыть альбом ужина" [ref=f8e145] [cursor=pointer]:
+          - generic [ref=f8e147]: Ужин
+          - generic [ref=f8e148]: Вечерпри свечах
+        - button "Открыть альбом корпоратива" [ref=f8e152] [cursor=pointer]:
+          - generic [ref=f8e154]: Корпоратив
+          - generic [ref=f8e155]: Вместевне офиса
+      - generic [ref=f8e159]:
+        - generic [ref=f8e160]: Дальше — Женя в кадре. Голос и подача, не только фотографии.
+        - link "Посмотреть видео" [ref=f8e161] [cursor=pointer]:
+          - /url: "#video"
+    - generic [ref=f8e163]:
+      - generic [ref=f8e164]:
+        - generic [ref=f8e165]: Один вечер / Из отзыва клиентов
+        - heading "«Главное — про нас»" [level=2] [ref=f8e166]: «Главное —про нас»
+      - generic [ref=f8e167]:
+        - paragraph [ref=f8e168]: На свадьбе Ярослава и Дарьи Женя обыграл их настоящую переписку с мамой после предложения. Гости смеялись, а для пары вечер остался камерным и личным — без конкурсов, в которых людей заставляют выступать.
+        - generic [ref=f8e169]: История пересказана по отзыву Дарьи Рыбаковой.
+        - link "Прочитать оригинал отзыва" [ref=f8e170] [cursor=pointer]:
+          - /url: https://eburg.gorko.ru/%D1%82%D0%B0%D0%BC%D0%B0%D0%B4%D0%B0/1243165/rating/
+    - generic [ref=f8e172]:
+      - generic [ref=f8e173]:
+        - generic [ref=f8e174]: 04 / Включите звук
+        - heading "Почувствовать вживую." [level=2] [ref=f8e175]: Почувствоватьвживую.
+        - paragraph [ref=f8e176]: "Шоурил 2026: голос, юмор и общение с залом."
+        - link "Обсудить событие" [ref=f8e177] [cursor=pointer]:
+          - /url: "#contact"
+      - generic "Шоурил Жени Калашникова, 2026" [ref=f8e179]: Ваш браузер не поддерживает видео.
+    - generic [ref=f8e181]:
+      - generic [ref=f8e182]:
+        - generic [ref=f8e183]:
+          - generic [ref=f8e184]: 05 / Услуги
+          - heading "Выберите ваш формат." [level=2] [ref=f8e185]: Выберитеваш формат.
+        - paragraph [ref=f8e186]: Сначала выберите, для кого вечер. Программу и стоимость обсуждаем с учётом задачи, даты и площадки.
+      - generic [ref=f8e187]:
+        - heading "Для своих" [level=3] [ref=f8e188]
+        - generic [ref=f8e189]:
+          - 'button "Для двоих и близких Свадьба Для пары и близких: знакомство гостей, поздравления и общение. До даты обсуждаем пожелания и важные моменты." [ref=f8e190] [cursor=pointer]':
+            - generic [ref=f8e191]: Для двоих и близких
+            - generic [ref=f8e192]:
+              - strong [ref=f8e193]: Свадьба
+              - paragraph [ref=f8e194]: "Для пары и близких: знакомство гостей, поздравления и общение. До даты обсуждаем пожелания и важные моменты."
+          - button "Для главного человека Юбилей Для именинника, семьи и друзей. Обсуждаем гостей и поздравления, чтобы программа объединила разные поколения." [ref=f8e198] [cursor=pointer]:
+            - generic [ref=f8e199]: Для главного человека
+            - generic [ref=f8e200]:
+              - strong [ref=f8e201]: Юбилей
+              - paragraph [ref=f8e202]: Для именинника, семьи и друзей. Обсуждаем гостей и поздравления, чтобы программа объединила разные поколения.
+      - generic [ref=f8e206]:
+        - heading "Для компании" [level=3] [ref=f8e207]
+        - generic [ref=f8e208]:
+          - button "Конец года Новогодний корпоратив Для команды в конце года. Женя ведёт программу и поздравления; заранее обсуждаем традиции компании и границы юмора." [ref=f8e209] [cursor=pointer]:
+            - generic [ref=f8e210]: Конец года
+            - generic [ref=f8e211]:
+              - strong [ref=f8e212]: Новогодний корпоратив
+              - paragraph [ref=f8e213]: Для команды в конце года. Женя ведёт программу и поздравления; заранее обсуждаем традиции компании и границы юмора.
+          - button "Торжественный вечер День рождения компании Для праздника в честь компании. Согласуем, кого отметить, порядок выступлений и переход к неформальной части." [ref=f8e217] [cursor=pointer]:
+            - generic [ref=f8e218]: Торжественный вечер
+            - generic [ref=f8e219]:
+              - strong [ref=f8e220]: День рождения компании
+              - paragraph [ref=f8e221]: Для праздника в честь компании. Согласуем, кого отметить, порядок выступлений и переход к неформальной части.
+          - button "Спикеры и переходы Отчётный вечер Для подведения итогов и выступлений. Заранее согласуем регламент; Женя представляет спикеров и связывает блоки." [ref=f8e225] [cursor=pointer]:
+            - generic [ref=f8e226]: Спикеры и переходы
+            - generic [ref=f8e227]:
+              - strong [ref=f8e228]: Отчётный вечер
+              - paragraph [ref=f8e229]: Для подведения итогов и выступлений. Заранее согласуем регламент; Женя представляет спикеров и связывает блоки.
+          - button "Регламент Официальное мероприятие Для события с протоколом. Уточняем имена, порядок выступлений и тон; Женя ведёт программу по регламенту." [ref=f8e233] [cursor=pointer]:
+            - generic [ref=f8e234]: Регламент
+            - generic [ref=f8e235]:
+              - strong [ref=f8e236]: Официальное мероприятие
+              - paragraph [ref=f8e237]: Для события с протоколом. Уточняем имена, порядок выступлений и тон; Женя ведёт программу по регламенту.
+          - button "Неформальная встреча Вечеринка Для неформальной встречи. До даты обсуждаем гостей и границы юмора, подбираем уместные игры и общение." [ref=f8e241] [cursor=pointer]:
+            - generic [ref=f8e242]: Неформальная встреча
+            - generic [ref=f8e243]:
+              - strong [ref=f8e244]: Вечеринка
+              - paragraph [ref=f8e245]: Для неформальной встречи. До даты обсуждаем гостей и границы юмора, подбираем уместные игры и общение.
+          - 'button "Без выхода на сцену Голос за кадром Для программы с закадровым ведущим. Согласуем тексты и сигналы: Женя делает объявления и связывает активности." [ref=f8e249] [cursor=pointer]':
+            - generic [ref=f8e250]: Без выхода на сцену
+            - generic [ref=f8e251]:
+              - strong [ref=f8e252]: Голос за кадром
+              - paragraph [ref=f8e253]: "Для программы с закадровым ведущим. Согласуем тексты и сигналы: Женя делает объявления и связывает активности."
+      - paragraph [ref=f8e257]: Длительность, дополнительная команда, оборудование и выезд уточняются лично.
+    - region [ref=f8e258]:
+      - generic [ref=f8e259]:
+        - heading "Каждой команде — свой вечер" [level=2] [ref=f8e260]
+        - list [ref=f8e262]:
+          - listitem [ref=f8e263]:
+            - generic [ref=f8e264]: Авито
+          - listitem [ref=f8e265]:
+            - generic [ref=f8e268]: Золотое Яблоко
+          - listitem [ref=f8e269]:
+            - generic [ref=f8e270]: УралТрансЭкспедиция
+          - listitem [ref=f8e271]:
+            - generic [ref=f8e274]: Сима-ленд
+          - listitem [ref=f8e275]:
+            - generic [ref=f8e276]: Контур
+          - listitem [ref=f8e277]:
+            - generic [ref=f8e278]: Жизньмарт
+          - listitem [ref=f8e279]:
+            - generic [ref=f8e282]: Синара
+          - listitem [ref=f8e283]:
+            - generic [ref=f8e286]: УБРиР
+    - generic [ref=f8e287]:
+      - generic [ref=f8e288]:
+        - generic [ref=f8e289]:
+          - generic [ref=f8e290]: 06 / Отзывы
+          - heading "Что говорят после праздника." [level=2] [ref=f8e291]: Что говорятпосле праздника.
+        - paragraph [ref=f8e292]: Короткий пересказ отзывов клиентов. Полный текст — на «Горько!».
+      - generic [ref=f8e293]:
+        - article [ref=f8e294]:
+          - generic "5 из 5" [ref=f8e295]: ★★★★★
+          - paragraph [ref=f8e296]: Вечер получился камерным и очень личным. Гости оценили Женин юмор, а программа обошлась без навязчивых конкурсов.
+          - generic [ref=f8e297]:
+            - generic [ref=f8e298]: Дарья Рыбакова
+            - text: Отзыв о свадьбе, 2023
+        - article [ref=f8e299]:
+          - generic "5 из 5" [ref=f8e300]: ★★★★★
+          - paragraph [ref=f8e301]: Женя отвечал на вопросы при подготовке, предложил свежие идеи и прямо на свадьбе быстро подстроил интерактив под новую возможность.
+          - generic [ref=f8e302]:
+            - generic [ref=f8e303]: Анастасия Гущина
+            - text: Отзыв о свадьбе
+        - article [ref=f8e304]:
+          - generic "5 из 5" [ref=f8e305]: ★★★★★
+          - paragraph [ref=f8e306]: На встрече Женя помог понять, каким хочется видеть праздник. На самом вечере знал гостей по именам и оставил время для общения.
+          - generic [ref=f8e307]:
+            - generic [ref=f8e308]: Guzelka G
+            - text: Отзыв о свадьбе
+      - link "Читать отзывы на «Горько!»" [ref=f8e309] [cursor=pointer]:
+        - /url: https://eburg.gorko.ru/%D1%82%D0%B0%D0%BC%D0%B0%D0%B4%D0%B0/1243165/rating/
+    - generic [ref=f8e310]:
+      - generic [ref=f8e311]: 07 / От идеи до вечера
+      - heading "Начнём с простого." [level=2] [ref=f8e312]
+      - list [ref=f8e313]:
+        - listitem [ref=f8e314]:
+          - generic [ref=f8e315]: "01"
+          - generic [ref=f8e316]: Знакомимся
+          - paragraph [ref=f8e317]: Вы рассказываете о дате, поводе и гостях. Обсуждаем, каким вы представляете праздник.
+        - listitem [ref=f8e318]:
+          - generic [ref=f8e319]: "02"
+          - generic [ref=f8e320]: Узнаём детали
+          - paragraph [ref=f8e321]: Знакомимся с деталями, людьми и моментами, которые сделают вечер личным.
+        - listitem [ref=f8e322]:
+          - generic [ref=f8e323]: "03"
+          - generic [ref=f8e324]: Готовим программу
+          - paragraph [ref=f8e325]: Согласовываем сценарий, настроение и важные моменты.
+        - listitem [ref=f8e326]:
+          - generic [ref=f8e327]: "04"
+          - generic [ref=f8e328]: Ваш вечер
+          - paragraph [ref=f8e329]: Вы наслаждаетесь праздником, а Женя ведёт программу и помогает гостям включиться.
+    - region [ref=f8e330]:
+      - generic [ref=f8e331]:
+        - heading "До первого разговора." [level=2] [ref=f8e332]: До первогоразговора.
+        - paragraph [ref=f8e333]: Ответы на частые вопросы
+      - group [ref=f8e334]:
+        - generic "Как готовится программа?" [ref=f8e335] [cursor=pointer]
+      - group [ref=f8e336]:
+        - generic "Всем гостям придётся участвовать?" [ref=f8e337] [cursor=pointer]
+      - group [ref=f8e338]:
+        - generic "Можно пригласить Женю в другой город?" [ref=f8e339] [cursor=pointer]
+      - group [ref=f8e340]:
+        - generic "DJ и оборудование входят в услугу?" [ref=f8e341] [cursor=pointer]
+      - group [ref=f8e342]:
+        - generic "Сколько стоит ведение?" [ref=f8e343] [cursor=pointer]
+      - group [ref=f8e344]:
+        - generic "Как забронировать дату?" [ref=f8e345] [cursor=pointer]
+      - link "Обсудить событие" [ref=f8e346] [cursor=pointer]:
+        - /url: "#contact"
+    - generic [ref=f8e348]:
+      - generic [ref=f8e349]:
+        - generic [ref=f8e350]: 08 / Если дата ещё свободна
+        - heading [level=2] [ref=f8e351]:
+          - text: Давайтесделаем
+          - emphasis [ref=f8e352]: это событие вашим.
+        - paragraph [ref=f8e353]: Расскажите о событии — форма подготовит сообщение в Telegram. MAX пока не подключён. Можно также позвонить по номеру ниже.
+        - generic [ref=f8e354]:
+          - link "+7 912 220-40-32" [ref=f8e355] [cursor=pointer]:
+            - /url: tel:+79122204032
+          - link "WhatsApp" [ref=f8e356] [cursor=pointer]:
+            - /url: https://wa.me/79122204032
+          - link "Telegram" [ref=f8e357] [cursor=pointer]:
+            - /url: https://t.me/+79122204032
+          - link "Instagram" [ref=f8e358] [cursor=pointer]:
+            - /url: https://www.instagram.com/e_kalashnikovv/
+          - link "VK" [ref=f8e359] [cursor=pointer]:
+            - /url: https://vk.ru/e_kalashnikovv
+      - generic [ref=f8e360]:
+        - generic [ref=f8e361]:
+          - generic [ref=f8e362]: 01 / Тип события
+          - combobox "01 / Тип события" [ref=f8e363]:
+            - option "Выберите событие" [selected]
+            - option "Свадьба"
+            - option "Юбилей"
+            - option "Новогодний корпоратив"
+            - option "День рождения компании"
+            - option "Отчётный вечер"
+            - option "Официальное мероприятие"
+            - option "Вечеринка"
+            - option "Голос за кадром"
+            - option "Другое событие"
+        - generic [ref=f8e364]:
+          - generic [ref=f8e365]: 02 / Желаемая дата
+          - textbox "02 / Желаемая дата" [ref=f8e366]
+        - generic [ref=f8e367]:
+          - generic [ref=f8e368]: 03 / Количество гостей
+          - spinbutton "03 / Количество гостей" [ref=f8e369]
+        - generic [ref=f8e370]:
+          - generic [ref=f8e371]: 04 / Как вас зовут
+          - textbox "04 / Как вас зовут" [ref=f8e372]:
+            - /placeholder: Ваше имя
+        - generic [ref=f8e373]:
+          - generic [ref=f8e374]: 05 / Как с вами связаться
+          - generic [ref=f8e375]:
+            - textbox "05 / Как с вами связаться" [ref=f8e379]:
+              - /placeholder: Ваш Telegram
+            - tablist "Способ связи" [ref=f8e380]:
+              - tab "MAX" [ref=f8e381] [cursor=pointer]
+              - tab "Telegram" [selected] [ref=f8e382] [cursor=pointer]
+        - button "Отправить в Telegram" [ref=f8e384] [cursor=pointer]
+        - status [ref=f8e388]: Откроется чат с Женей в Telegram. Сообщение уйдёт, когда нажмёте отправить уже там.
+        - generic [ref=f8e389]:
+          - checkbox "Я ознакомлен(а) с Политикой обработки персональных данных и даю Согласие на обработку моих ПДн на условиях указанных документов." [ref=f8e390]
+          - generic [ref=f8e391]:
+            - text: Я ознакомлен(а) с
+            - link "Политикой обработки персональных данных" [ref=f8e392] [cursor=pointer]:
+              - /url: privacy.html
+            - text: и даю
+            - link "Согласие на обработку моих ПДн" [ref=f8e393] [cursor=pointer]:
+              - /url: consent.html
+            - text: на условиях указанных документов.
+  - contentinfo [ref=f8e394]:
+    - generic [ref=f8e395]:
+      - generic [ref=f8e396]:
+        - generic [ref=f8e397]: © 2026 Женя Калашников
+        - generic [ref=f8e398]: Екатеринбург / Москва
+      - generic [ref=f8e399]:
+        - navigation "Соцсети" [ref=f8e400]:
+          - link "WhatsApp" [ref=f8e401] [cursor=pointer]:
+            - /url: https://wa.me/79122204032
+          - link "Telegram" [ref=f8e404] [cursor=pointer]:
+            - /url: https://t.me/+79122204032
+          - link "Instagram" [ref=f8e407] [cursor=pointer]:
+            - /url: https://www.instagram.com/e_kalashnikovv/
+          - link "VK" [ref=f8e410] [cursor=pointer]:
+            - /url: https://vk.ru/e_kalashnikovv
+        - navigation "Документы" [ref=f8e413]:
+          - link "Пользовательское соглашение" [ref=f8e414] [cursor=pointer]:
+            - /url: terms.html
+          - link "Политика обработки персональных данных" [ref=f8e415] [cursor=pointer]:
+            - /url: privacy.html
